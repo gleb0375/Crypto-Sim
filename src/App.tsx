@@ -8,9 +8,9 @@ import { GlobalStyle } from './styles/GlobalStyles';
 
 const ContentContainer = styled.main`
     position: relative;
-    top: 8vh;         /* смещаем основной блок на 8vh вниз, ровно под хедер */
-    height: 92vh;     /* оставшиеся 92vh экрана */
-    overflow-y: auto; /* при большом контенте будет прокрутка */
+    top: 8vh;        
+    height: 92vh;    
+    overflow-y: auto;
     background-color: #fff;
 `;
 
