@@ -7,16 +7,14 @@ const DropdownListContainer = styled.div`
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #2c2121;
-    border: 1px solid #292121;
+    background-color: #101014;
     margin-top: 0.5rem;
     padding: 0.5rem;
     width: 15vh;
     z-index: 10;
-
-    font-size: 0.8rem;      /* относительная единица, вместо px */
-    max-height: 10rem;     /* приблизительно 5 элементов по ~2rem */
-    overflow-y: auto;      /* скролл, если элементов больше 5 */
+    font-size: 0.8rem;
+    max-height: 10rem;
+    overflow-y: auto;
 `;
 
 const DropdownItem = styled.div`

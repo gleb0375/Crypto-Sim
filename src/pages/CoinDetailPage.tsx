@@ -7,14 +7,14 @@ import TradingChart from "../common-components/chart/TradingChart";
 import CoinHeader from "../common-components/coin/CoinHeader";
 
 const ContainerCoinDetail = styled.div`
-    display: flex;             /* Горизонтальное размещение */
+    display: flex; /* Горизонтальное размещение */
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
     height: 100%;
     color: #ffffff;
     font-size: 2rem;
-    background-color: #332d2d;
+    background-color: #16161b;
     /* Можем задать gap, чтобы раздвинуть блоки */
     gap: 5vh; /* или 3rem, или иные относительные единицы */
 `;
@@ -22,8 +22,7 @@ const ContainerCoinDetail = styled.div`
 const ChartContainer = styled.div`
     width: 100vh;
     height: 60vh;
-    background-color: #2c2121;
-    border: 2px dashed #292121;
+    background-color: #101014;
     display: flex;
     justify-content: center;
     align-items: center;

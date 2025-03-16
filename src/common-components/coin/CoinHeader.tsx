@@ -6,8 +6,7 @@ import CoinDropdownList from "./CoinDropdownList";
 
 const HeaderContainer = styled.div`
     display: flex;
-    background-color: #2c2121;
-    border: 2px dashed #292121;
+    background-color: #101014;
     color: #ffffff;
     padding: 1rem;
     position: relative;

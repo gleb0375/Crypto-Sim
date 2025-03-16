@@ -25,16 +25,35 @@ const TradingChart: React.FC<TradingChartProps> = ({ data }) => {
 
         chart.setStyles({
             layout: {
-                backgroundColor: '#3d4047',
-                textColor: '#fcfdfd',
+                backgroundColor: '#dd0d0d',
             },
+
+            xAxis: {
+                tickText: {
+                    color: '#ffffff',
+                    size: 14,
+                },
+                axisLine: {
+                    color: '#ffffff',
+                }
+            },
+
+            yAxis: {
+                tickText: {
+                    color: '#ffffff',
+                    size: 14,
+                },
+                axisLine: {
+                    color: '#ffffff'
+                }
+            },
+
             grid: {
-                //@ts-ignore
-                horizontal: { color: '#888', style: 'dashed' },
-                //@ts-ignore
-                vertical: { color: '#888', style: 'dashed' },
-            },
+                horizontal: { color: '#888888', style: 'dashed' },
+                vertical:   { color: '#888888', style: 'dashed' },
+            }
         });
+
 
         return () => {
             dispose(chart);
