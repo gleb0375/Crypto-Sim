@@ -93,14 +93,14 @@ const Header: React.FC = () => {
                     About
                 </NavButton>
                 <NavButton id="len2" onClick={() => navigate(ROUTES.COIN_DETAIL)}>
-                    Coin Detail
+                    Trade
                 </NavButton>
                 <NavButton id="len3" onClick={() => navigate(ROUTES.WALLET)}>
                     Wallet
                 </NavButton>
-                <NavButton id="len4" onClick={() => navigate(ROUTES.TRADING)}>
-                    Trading
-                </NavButton>
+                {/*<NavButton id="len4" onClick={() => navigate(ROUTES.TRADING)}>*/}
+                {/*    Trading*/}
+                {/*</NavButton>*/}
             </NavSection>
         </HeaderContainer>
     );

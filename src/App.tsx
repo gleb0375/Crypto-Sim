@@ -5,6 +5,7 @@ import { ROUTES } from './constants/constants';
 import Header from "./common-components/header/header.tsx";
 import CoinDetailPage from "./pages/CoinDetailPage.tsx";
 import { GlobalStyle } from './styles/GlobalStyles';
+import WalletPage from "./pages/WalletPage.tsx";
 
 const ContentContainer = styled.main`
     position: relative;
@@ -22,7 +23,7 @@ const App: React.FC = () => {
             <ContentContainer>
                 <Routes>
                     <Route path={ROUTES.COIN_DETAIL} element={<CoinDetailPage />} />
-                    {/*<Route path={ROUTES.WALLET} element={<WalletPage />} />*/}
+                    <Route path={ROUTES.WALLET} element={<WalletPage />} />
                     {/*<Route path={ROUTES.TRADING} element={<TradingPage />} />*/}
                 </Routes>
             </ContentContainer>

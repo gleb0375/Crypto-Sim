@@ -6,11 +6,11 @@ import CoinDropdownList from "./CoinDropdownList";
 
 const HeaderContainer = styled.div`
     display: flex;
-    background-color: #101014;
+    background-color: #16161b;
     color: #ffffff;
-    padding: 1rem;
     position: relative;
     align-items: center;
+    margin-bottom: 2vh;
 `;
 
 const Section = styled.div`
@@ -20,24 +20,23 @@ const Section = styled.div`
 `;
 
 const CoinLogo = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 3.5vh;
+    height: 3.5vh;
 `;
 
 const CoinSymbol = styled.div`
-    font-size: 1.5rem;
-    margin-left: 2rem;
-`;
-
-const PriceWrapper = styled.div`
-    width: 12rem;          
-    display: flex;
-    justify-content: flex-end;
+    font-size: 2vh;
+    margin-left: 1rem;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
 `;
 
 const CoinPrice = styled.div`
-    font-size: 1.5rem;
-    color: #32b81d;
+    font-size: 2.5vh;
+    color: #e5ece2;
+    font-weight: bold;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 `;
 
 const DropdownButton = styled.div`
@@ -66,7 +65,8 @@ const CoinHeader: React.FC<CoinHeaderProps> = ({
                                                    onSelectCoin
                                                }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const displayPrice = price ? price.toFixed(2) : "...";
+    const displayPrice = price ? price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "...";
+
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -80,20 +80,18 @@ const CoinHeader: React.FC<CoinHeaderProps> = ({
     return (
         <HeaderContainer>
             <Section>
-                <CoinLogo src={selectedCoin.logo} alt={`${selectedCoin.name} Logo`} />
-                <CoinSymbol>{selectedCoin.name}</CoinSymbol>
-            </Section>
-
-            <Section>
-                <PriceWrapper>
-                    <CoinPrice>{displayPrice} USDT</CoinPrice>
-                </PriceWrapper>
-            </Section>
-
-            <Section>
                 <DropdownButton onClick={toggleDropdown}>
                     {isOpen ? <IoIosArrowDropup size={24} /> : <IoIosArrowDropdown size={24} />}
                 </DropdownButton>
+            </Section>
+
+            <Section>
+                <CoinLogo src={selectedCoin.logo} alt={`${selectedCoin.name} Logo`}/>
+                <CoinSymbol>{selectedCoin.name}/USDT</CoinSymbol>
+            </Section>
+
+            <Section>
+                    <CoinPrice>{displayPrice}</CoinPrice>
             </Section>
 
             {isOpen && (
