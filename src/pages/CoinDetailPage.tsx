@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useKlines } from "../hooks/useKlines";
 import TradingChart from "../common-components/chart/TradingChart";
-import CoinHeader from "../common-components/coin/CoinHeader";
-import {Coin} from "../types/coin.types.ts";
-import {COINS} from "../constants/coins.constants.ts";
+import CoinInfoContainer from "../common-components/coin/CoinInfoContainer.tsx";
+import TimeIntervalContainer from "../common-components/chart/TimeIntervalContainer.tsx";
+import { Coin } from "../types/coin.types.ts";
+import { COINS } from "../constants/coins.constants.ts";
 import {TIME_INTERVALS} from "../constants/market.constans.ts";
 
-const ContainerCoinDetail = styled.div`
+    const ContainerCoinDetail = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -36,29 +37,6 @@ const ChartContainer = styled.div`
     overflow: auto;
 `;
 
-const TimeIntervalsContainer = styled.div`
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2vh;
-`;
-
-const TimeButton = styled.button<{ selected: boolean }>`
-    background-color: ${({ selected }) => (selected ? "#ffffff22" : "transparent")};
-    border: 1px solid #ffffff55;
-    color: white;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    font-size: 1.5vh;
-    border-radius: 5px;
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 500;
-    
-
-    &:hover {
-        background-color: #ffffff33;
-    }
-`;
-
 const CoinDetailPage: React.FC = () => {
     const [selectedCoin, setSelectedCoin] = useState<Coin>(COINS[0]);
     const [selectedInterval, setSelectedInterval] = useState("1m");
@@ -80,23 +58,17 @@ const CoinDetailPage: React.FC = () => {
     return (
         <ContainerCoinDetail>
             <LeftPanel>
-                <CoinHeader
+                <CoinInfoContainer
                     coins={COINS}
                     selectedCoin={selectedCoin}
                     price={price}
                     onSelectCoin={(coin) => setSelectedCoin(coin)}
                 />
-                <TimeIntervalsContainer>
-                    {TIME_INTERVALS.map((interval) => (
-                        <TimeButton
-                            key={interval}
-                            selected={selectedInterval === interval}
-                            onClick={() => setSelectedInterval(interval)}
-                        >
-                            {interval}
-                        </TimeButton>
-                    ))}
-                </TimeIntervalsContainer>
+                <TimeIntervalContainer
+                    intervals={TIME_INTERVALS}
+                    selectedInterval={selectedInterval}
+                    onSelect={setSelectedInterval}
+                />
                 <ChartContainer>
                     {data ? <TradingChart data={data} /> : <div>No data</div>}
                 </ChartContainer>

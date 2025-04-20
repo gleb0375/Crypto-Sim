@@ -1,4 +1,3 @@
-// src/common-components/coin/CoinDropdownList.tsx
 import React from "react";
 import styled from "styled-components";
 import {CoinDropdownListProps} from "../../types/coin.types.ts";
