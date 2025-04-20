@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { init, dispose, Chart } from "klinecharts";
-import { TradingChartProps } from "../../constants/binanceConstants";
+import {TradingChartProps} from "../../types/market.types.ts";
 
 const convertKline = (item: TradingChartProps["data"][number]) => ({
     timestamp: item.openTime,

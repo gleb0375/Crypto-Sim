@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import { ROUTES } from './constants/constants';
+import { ROUTES } from './constants/routes.ts';
 import Header from "./common-components/header/header.tsx";
 import CoinDetailPage from "./pages/CoinDetailPage.tsx";
 import { GlobalStyle } from './styles/GlobalStyles';

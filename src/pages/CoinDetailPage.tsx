@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { COINS, Coin, TIME_INTERVALS } from "../constants/binanceConstants";
 import { useKlines } from "../hooks/useKlines";
 import TradingChart from "../common-components/chart/TradingChart";
 import CoinHeader from "../common-components/coin/CoinHeader";
+import {Coin} from "../types/coin.types.ts";
+import {COINS} from "../constants/coins.constants.ts";
+import {TIME_INTERVALS} from "../constants/market.constans.ts";
 
 const ContainerCoinDetail = styled.div`
     display: flex;

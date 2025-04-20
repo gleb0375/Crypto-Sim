@@ -1,7 +1,7 @@
 // src/common-components/coin/CoinDropdownList.tsx
 import React from "react";
 import styled from "styled-components";
-import { Coin } from "../../constants/binanceConstants";
+import {CoinDropdownListProps} from "../../types/coin.types.ts";
 
 const DropdownListContainer = styled.div`
     position: absolute;
@@ -33,11 +33,6 @@ const DropdownItemLogo = styled.img`
     width: 24px;
     height: 24px;
 `;
-
-interface CoinDropdownListProps {
-    coins: Coin[];
-    onSelectCoin: (coin: Coin) => void;
-}
 
 const CoinDropdownList: React.FC<CoinDropdownListProps> = ({
                                                                coins,

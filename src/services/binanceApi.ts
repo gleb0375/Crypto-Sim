@@ -1,9 +1,10 @@
+
+import {Kline, TickerPrice} from "../types/market.types.ts";
 import {
     BINANCE_KLINES_ENDPOINT,
     BINANCE_TICKER_PRICE_ENDPOINT,
     DEFAULT_KLINE_LIMIT
-} from '../constants/binanceConstants';
-import type { Kline, TickerPrice } from '../constants/binanceConstants';
+} from "../constants/market.constans.ts";
 
 export async function getKlines(
     symbol: string,

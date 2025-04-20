@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Coin } from "../../constants/binanceConstants";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import CoinDropdownList from "./CoinDropdownList";
+import {Coin, CoinHeaderProps} from "../../types/coin.types.ts";
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -50,13 +50,6 @@ const DropdownButton = styled.div`
     background-color: #444;
   }
 `;
-
-interface CoinHeaderProps {
-    coins: Coin[];
-    selectedCoin: Coin;
-    price?: number;
-    onSelectCoin: (coin: Coin) => void;
-}
 
 const CoinHeader: React.FC<CoinHeaderProps> = ({
                                                    coins,

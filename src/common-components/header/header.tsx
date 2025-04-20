@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../constants/constants';
+import { ROUTES } from '../../constants/routes.ts';
 
 const HeaderContainer = styled.header`
     display: flex;
