@@ -29,4 +29,6 @@ export interface TickerPrice {
 
 export interface TradingChartProps {
     data: MinimalKlineData[];
+    symbol: string;
+    interval: string;
 }

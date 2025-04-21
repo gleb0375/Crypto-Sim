@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import { init, dispose, Chart } from "klinecharts";
-import {TradingChartProps} from "../../types/market.types.ts";
+import React, { useEffect } from "react";
+import { init, dispose, KLineData } from "klinecharts";
+import { TradingChartProps } from "../../types/market.types";
 
-const convertKline = (item: TradingChartProps["data"][number]) => ({
+interface Props extends TradingChartProps {
+    onPriceUpdate?: (price: number) => void;
+}
+
+const convertKline = (item: TradingChartProps["data"][number]): KLineData => ({
     timestamp: item.openTime,
     open: parseFloat(item.open),
     high: parseFloat(item.high),
@@ -11,69 +15,55 @@ const convertKline = (item: TradingChartProps["data"][number]) => ({
     volume: parseFloat(item.volume),
 });
 
-const TradingChart: React.FC<TradingChartProps> = ({ data }) => {
-    const chartContainerRef = useRef<HTMLDivElement>(null);
-    const chartRef = useRef<Chart | null>(null);
-
+const TradingChart: React.FC<Props> = ({ data, symbol, interval, onPriceUpdate }) => {
     useEffect(() => {
-        if (!chartContainerRef.current) return;
+        const chart = init("k-line-chart");
 
-        const chart = init(chartContainerRef.current);
-        if (!chart) return;
-
-        chartRef.current = chart;
-
-        chart.setStyles({
-            layout: {
-                backgroundColor: '#dd0d0d',
-            },
-
-            xAxis: {
-                tickText: {
-                    color: '#ffffff',
-                    size: 14,
-                },
-                axisLine: {
-                    color: '#ffffff',
-                }
-            },
-
-            yAxis: {
-                tickText: {
-                    color: '#ffffff',
-                    size: 14,
-                },
-                axisLine: {
-                    color: '#ffffff'
-                }
-            },
-
+        chart?.setStyles({
+            layout: { backgroundColor: "#16161b" },
+            xAxis: { tickText: { color: "#fff", size: 14 }, axisLine: { color: "#fff" } },
+            yAxis: { tickText: { color: "#fff", size: 14 }, axisLine: { color: "#fff" } },
             grid: {
-                horizontal: { color: '#888888', style: 'dashed' },
-                vertical:   { color: '#888888', style: 'dashed' },
-            }
+                horizontal: { color: "#888", style: "dashed" },
+                vertical: { color: "#888", style: "dashed" },
+            },
         });
 
+        const formatted = data.map(convertKline).sort((a, b) => a.timestamp - b.timestamp);
+        chart?.applyNewData(formatted);
+
+        const wsSymbol = symbol.toLowerCase();
+        const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${wsSymbol}@kline_${interval}`);
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            const k = message.k;
+
+            if (k) {
+                const newCandle: KLineData = {
+                    timestamp: k.t,
+                    open: parseFloat(k.o),
+                    high: parseFloat(k.h),
+                    low: parseFloat(k.l),
+                    close: parseFloat(k.c),
+                    volume: parseFloat(k.v),
+                };
+
+                chart?.updateData(newCandle);
+
+                if (onPriceUpdate) {
+                    onPriceUpdate(parseFloat(k.c));
+                }
+            }
+        };
 
         return () => {
-            dispose(chart);
+            ws.close();
+            dispose("k-line-chart");
         };
-    }, []);
+    }, [data, symbol, interval]);
 
-    useEffect(() => {
-        if (!chartRef.current) return;
-        if (!data || data.length === 0) return;
-
-        const convertedData = data.map(convertKline);
-        chartRef.current.applyNewData(convertedData);
-    }, [data]);
-
-    return (
-        <div
-            ref={chartContainerRef}
-            style={{ width: "100%", height: "100%" }}
-        />
-    );
+    return <div id="k-line-chart" style={{ width: "100%", height: "100%" }} />;
 };
 
 export default TradingChart;

@@ -1,21 +1,38 @@
-
-import {Kline, TickerPrice} from "../types/market.types.ts";
+import { Kline, TickerPrice } from "../types/market.types.ts";
 import {
     BINANCE_KLINES_ENDPOINT,
     BINANCE_TICKER_PRICE_ENDPOINT,
     DEFAULT_KLINE_LIMIT
 } from "../constants/market.constans.ts";
 
+interface GetKlinesOptions {
+    startTime?: number;
+    endTime?: number;
+    limit?: number;
+}
+
 export async function getKlines(
     symbol: string,
     interval: string,
-    limit: number = DEFAULT_KLINE_LIMIT
+    options: GetKlinesOptions = {}
 ): Promise<Kline[]> {
-    const url = `${BINANCE_KLINES_ENDPOINT}?symbol=${symbol}&interval=${interval}&limit=${limit}`;
+    const { startTime, endTime, limit = DEFAULT_KLINE_LIMIT } = options;
+
+    const params = new URLSearchParams({
+        symbol,
+        interval,
+        limit: limit.toString(),
+    });
+
+    if (startTime) params.append("startTime", startTime.toString());
+    if (endTime) params.append("endTime", endTime.toString());
+
+    const url = `${BINANCE_KLINES_ENDPOINT}?${params.toString()}`;
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Error fetching klines: ${response.statusText}`);
     }
+
     const data = await response.json();
 
     return data.map((item: any[]): Kline => ({

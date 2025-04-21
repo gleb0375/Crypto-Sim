@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { getKlines } from '../services/binanceApi';
-import {Kline} from "../types/market.types.ts";
+import { Kline } from "../types/market.types.ts";
 
 export const useKlines = (symbol: string, interval: string) => {
     return useQuery<Kline[]>({
         queryKey: ['klines', symbol, interval],
         queryFn: () => getKlines(symbol, interval),
-        refetchInterval: 10,
-        staleTime: 30000,
+        refetchInterval: false,
+        staleTime: 60000,
     });
 };
