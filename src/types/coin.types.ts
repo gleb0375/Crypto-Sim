@@ -15,3 +15,10 @@ export interface CoinHeaderProps {
     price?: number;
     onSelectCoin: (coin: Coin) => void;
 }
+
+export interface WalletCoinItem extends Coin {
+    rank: number;
+    holdings: string;
+    value: string;
+    color: string;
+}
