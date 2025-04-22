@@ -1,19 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import {WalletCoinItem} from "../../types/coin.types.ts";
+import { WalletCoinItem } from "../../types/coin.types.ts";
 
 interface Props {
     coin: WalletCoinItem;
+    index: number;
 }
 
 const ItemContainer = styled.div`
     display: flex;
     align-items: center;
-    background-color: #d6edff; // светло-синий как на скрине
+    background-color: #d6edff;
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 1rem;
-    height: 4.5rem;
+    height: 5vh;
 `;
 
 const Rank = styled.div<{ bg: string }>`
@@ -25,6 +26,7 @@ const Rank = styled.div<{ bg: string }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
 `;
 
 const CoinInfo = styled.div`

@@ -19,6 +19,7 @@ const LeftColumn = styled.div`
     display: flex;
     flex-direction: column;
     width: ${LEFT_COLUMN_WIDTH};
+    height: 100%;
     gap: 2rem;
 `;
 

@@ -2,6 +2,7 @@ export interface Coin {
     symbol: string;
     name: string;
     logo: string;
+    color: string;
 }
 
 export interface CoinDropdownListProps {
@@ -20,5 +21,4 @@ export interface WalletCoinItem extends Coin {
     rank: number;
     holdings: string;
     value: string;
-    color: string;
 }

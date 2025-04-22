@@ -8,7 +8,7 @@ const HeaderBox = styled.div`
     border-radius: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     width: ${LEFT_COLUMN_WIDTH};
-    box-sizing: border-box; // ✅ ВАЖНО
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
