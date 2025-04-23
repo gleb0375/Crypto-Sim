@@ -14,6 +14,23 @@ const DropdownListContainer = styled.div`
     font-size: 0.8rem;
     max-height: 10rem;
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #555;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #777;
+    }
 `;
 
 const DropdownItem = styled.div`

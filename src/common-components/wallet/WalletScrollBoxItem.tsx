@@ -49,7 +49,7 @@ const Name = styled.span`
 
 const Holdings = styled.div`
     width: 6rem;
-    text-align: right;
+    text-align: center;
     color: #2e2e2e;
 `;
 

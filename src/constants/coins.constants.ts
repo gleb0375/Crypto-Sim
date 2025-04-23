@@ -181,4 +181,5 @@ export const walletMockData: WalletCoinItem[] = [
 
 ];
 
-export const LEFT_COLUMN_WIDTH = "50vh";
+//export const LEFT_COLUMN_WIDTH = "50vh";
+export const LEFT_COLUMN_WIDTH = "100%";

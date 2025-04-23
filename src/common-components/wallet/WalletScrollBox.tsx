@@ -41,27 +41,37 @@ const HeaderRow = styled.div`
 const HeaderColumn = styled.div`
     display: flex;
     align-items: center;
+    font-size: clamp(0.7rem, 3.5vw, 1rem);
 
     &:nth-child(1) {
-        min-width: 1.2rem;             
+        width: 1.5rem;
         justify-content: center;
         text-align: center;
     }
 
     &:nth-child(2) {
         flex: 2;
-        padding-left: 2rem;           
+        padding-left: 2.5rem;
+        min-width: 8rem;
+
+        @media (max-width: 480px) {
+            padding-left: 1rem;
+        }
     }
 
     &:nth-child(3),
     &:nth-child(4) {
-        width: 4rem;
+        width: 6rem;
         text-align: right;
         justify-content: flex-end;
-        padding-right: 1.5rem;
+        padding-right: 1rem;
+
+        @media (max-width: 480px) {
+            width: 7rem;
+            padding-right: 0.5rem;
+        }
     }
 `;
-
 
 const ItemsContainer = styled.div`
     flex: 1;

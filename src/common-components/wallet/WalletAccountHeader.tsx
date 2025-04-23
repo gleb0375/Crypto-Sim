@@ -22,7 +22,7 @@ const Title = styled.div`
 `;
 
 const BalanceUSD = styled.div`
-    font-size: 2.5rem;
+    font-size: 5vh;
     color: #00ff99;
     font-weight: bold;
 `;

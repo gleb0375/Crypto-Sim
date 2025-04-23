@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ROUTES } from '../../constants/routes.ts';
+import { ROUTES } from '../../constants/routes';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const HeaderContainer = styled.header`
     display: flex;
@@ -14,11 +15,20 @@ const HeaderContainer = styled.header`
     left: 0;
     height: 8vh;
     z-index: 1000;
+
+    @media (max-width: 768px) {
+        justify-content: space-between;
+        //padding: 0 1rem;
+    }
 `;
 
 const NavSection = styled.nav`
     display: flex;
     align-items: center;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 const NavButton = styled.button<{ isActive: boolean }>`
@@ -46,76 +56,162 @@ const NavButton = styled.button<{ isActive: boolean }>`
     ${({ isActive }) =>
             isActive
                     ? css`
-                  text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.8);
-              `
+                        text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.8);
+                    `
                     : css`
-                  transform: translateZ(0);
-                  transition-property: transform, text-shadow;
+                        transform: translateZ(0);
+                        transition-property: transform, text-shadow;
 
-                  &:before {
-                      content: '';
-                      position: absolute;
-                      pointer-events: none;
-                      z-index: -1;
-                      top: 115%;
-                      left: 5%;
-                      height: 0.7rem;
-                      width: 90%;
-                      opacity: 0;
-                      background: radial-gradient(
-                          ellipse at center,
-                          rgba(255, 255, 255, 0.35) 0%,
-                          rgba(255, 255, 255, 0) 80%
-                      );
-                      transition-duration: 0.3s;
-                      transition-property: transform;
-                  }
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            pointer-events: none;
+                            z-index: -1;
+                            top: 115%;
+                            left: 5%;
+                            height: 0.7rem;
+                            width: 90%;
+                            opacity: 0;
+                            background: radial-gradient(
+                                    ellipse at center,
+                                    rgba(255, 255, 255, 0.35) 0%,
+                                    rgba(255, 255, 255, 0) 80%
+                            );
+                            transition-duration: 0.3s;
+                            transition-property: transform;
+                        }
 
-                  &:hover,
-                  &:active,
-                  &:focus {
-                      transform: translateY(-5px);
-                      text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.8);
-                  }
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            transform: translateY(-5px);
+                            text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.8);
+                        }
 
-                  &:hover:before,
-                  &:active:before,
-                  &:focus:before {
-                      opacity: 1;
-                      transform: translateY(-5px);
-                  }
-              `}
+                        &:hover:before,
+                        &:active:before,
+                        &:focus:before {
+                            opacity: 1;
+                            transform: translateY(-5px);
+                        }
+                    `}
+
+    @media (max-width: 768px) {
+    &:hover,
+    &:active,
+    &:focus {
+        transform: none !important;
+        text-shadow: none !important;
+    }
+
+    &:before,
+    &:hover:before,
+    &:active:before,
+    &:focus:before {
+        display: none !important;
+        opacity: 0 !important;
+        transform: none !important;
+    }
+}
+`;
+
+const BurgerButton = styled.button`
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    display: none;
+    cursor: pointer;
+
+    @media (max-width: 768px) {
+        display: block;
+        margin-left: auto;
+    }
+`;
+
+const Sidebar = styled.div<{ isOpen: boolean }>`
+    position: fixed;
+    top: 8vh;
+    right: 0;
+    width: 200px;
+    height: calc(100vh - 8vh);
+    background-color: #13161c;
+    //box-shadow: -2px 0 8px rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transform: translateX(${props => (props.isOpen ? '0' : '100%')});
+    transition: transform 0.3s ease-in-out;
+
+    button {
+        margin: 0;
+        padding: 0.5rem;
+        width: 100%;
+        font-size: 1rem;
+        text-align: left;
+    }
 `;
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <HeaderContainer>
             <NavSection>
                 <NavButton
-                    id="len1"
                     onClick={() => navigate(ROUTES.HOME)}
                     isActive={location.pathname === ROUTES.HOME}
                 >
                     About
                 </NavButton>
                 <NavButton
-                    id="len2"
                     onClick={() => navigate(ROUTES.COIN_DETAIL)}
                     isActive={location.pathname === ROUTES.COIN_DETAIL}
                 >
                     Trade
                 </NavButton>
                 <NavButton
-                    id="len3"
                     onClick={() => navigate(ROUTES.WALLET)}
                     isActive={location.pathname === ROUTES.WALLET}
                 >
                     Wallet
                 </NavButton>
             </NavSection>
+            <BurgerButton onClick={() => setSidebarOpen(!sidebarOpen)}>
+                <GiHamburgerMenu />
+            </BurgerButton>
+            <Sidebar isOpen={sidebarOpen}>
+                <NavButton
+                    onClick={() => {
+                        navigate(ROUTES.HOME);
+                        setSidebarOpen(false);
+                    }}
+                    isActive={location.pathname === ROUTES.HOME}
+                >
+                    About
+                </NavButton>
+                <NavButton
+                    onClick={() => {
+                        navigate(ROUTES.COIN_DETAIL);
+                        setSidebarOpen(false);
+                    }}
+                    isActive={location.pathname === ROUTES.COIN_DETAIL}
+                >
+                    Trade
+                </NavButton>
+                <NavButton
+                    onClick={() => {
+                        navigate(ROUTES.WALLET);
+                        setSidebarOpen(false);
+                    }}
+                    isActive={location.pathname === ROUTES.WALLET}
+                >
+                    Wallet
+                </NavButton>
+            </Sidebar>
         </HeaderContainer>
     );
 };

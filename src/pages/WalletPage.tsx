@@ -18,6 +18,7 @@ const ContainerWallet = styled.div`
 const LeftColumn = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 50vh;
     width: ${LEFT_COLUMN_WIDTH};
     height: 100%;
     gap: 2rem;
