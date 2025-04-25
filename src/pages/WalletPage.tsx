@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
 import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
-import {LEFT_COLUMN_WIDTH, walletMockData} from "../constants/coins.constants.ts";
+import {LEFT_COLUMN_WIDTH} from "../constants/wallet.constants.ts";
+import {walletMockData} from "../constants/coins.constants.ts";
 
 const ContainerWallet = styled.div`
     display: flex;

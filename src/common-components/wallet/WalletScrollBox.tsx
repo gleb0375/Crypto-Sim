@@ -17,6 +17,8 @@ const ScrollBoxContainer = styled.div`
     padding:1rem;
     margin-top:1rem;
 
+    box-sizing:border-box;
+
     display:flex;
     flex-direction:column;
     overflow:hidden;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {LEFT_COLUMN_WIDTH} from "../../constants/coins.constants.ts";
+import {LEFT_COLUMN_WIDTH} from "../../constants/wallet.constants.ts";
 
 const HeaderBox = styled.div`
     background-color: #1e1e24;

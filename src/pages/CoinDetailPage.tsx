@@ -8,6 +8,7 @@ import TimeIntervalContainer from "../common-components/chart/TimeIntervalContai
 import { Coin } from "../types/coin.types.ts";
 import { COINS } from "../constants/coins.constants.ts";
 import { TIME_INTERVALS } from "../constants/market.constans.ts";
+import Loader from "../common-components/loader/Loader.tsx";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -48,8 +49,9 @@ const CoinDetailPage: React.FC = () => {
 
     const displayPrice = livePrice ?? (tickerData ? parseFloat(tickerData.price) : undefined);
 
+
     if (isLoading) {
-        return <ContainerCoinDetail>Loading...</ContainerCoinDetail>;
+        return <Loader />;
     }
 
     if (error) {

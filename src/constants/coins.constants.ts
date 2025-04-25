@@ -161,7 +161,7 @@ export const walletMockData: WalletCoinItem[] = [
         color: "#627eea"
     },
     {
-        rank: 2,
+        rank: 14,
         name: "ETH",
         symbol: "ETHUSDT",
         logo: "/assets/logos/ethereum-eth-logo.png",
