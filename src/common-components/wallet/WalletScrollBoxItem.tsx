@@ -33,13 +33,14 @@ const CoinInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    font-size: 2vh;
     padding: 0 1.5rem;
     flex: 1;
 `;
 
 const Logo = styled.img`
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 3vh;
+    height: 3vh;
 `;
 
 const Name = styled.span`
