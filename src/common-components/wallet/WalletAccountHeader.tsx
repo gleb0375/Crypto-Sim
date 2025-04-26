@@ -1,6 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import {LEFT_COLUMN_WIDTH} from "../../constants/wallet.constants.ts";
+import {WalletBalance} from "../../types/coin.types.ts";
+
+interface Props {
+    balance: WalletBalance;
+}
 
 const HeaderBox = styled.div`
     background-color: #1e1e24;
@@ -15,6 +20,7 @@ const HeaderBox = styled.div`
 `;
 
 const Title = styled.div`
+    color: #b3c1bb;
     font-size: 4vh;
     font-family: 'telegraf', sans-serif;
     font-weight: 800;
@@ -32,12 +38,12 @@ const BalanceBTC = styled.div`
     color: #888;
 `;
 
-const WalletAccountHeader: React.FC = () => {
+const WalletAccountHeader: React.FC<Props> = ({balance}) => {
     return (
         <HeaderBox>
             <Title>Total Balance</Title>
-            <BalanceUSD>$641.85</BalanceUSD>
-            <BalanceBTC>= 0.00768845 BTC</BalanceBTC>
+            <BalanceUSD>${balance.totalValueUSD.toFixed(2)}</BalanceUSD>
+            <BalanceBTC>= {balance.totalHoldingsBTC.toFixed(8)} BTC</BalanceBTC>
         </HeaderBox>
     );
 };

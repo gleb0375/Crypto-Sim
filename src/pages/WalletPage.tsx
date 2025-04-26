@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useMemo} from "react";
 import styled from "styled-components";
 import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
 import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
 import {LEFT_COLUMN_WIDTH} from "../constants/wallet.constants.ts";
-import {walletMockData} from "../constants/coins.constants.ts";
+import {calculateWalletBalance} from "../utils/calculateWalletBalance.ts";
+import {buildInitialWallet} from "../utils/buildInitialWallet.ts";
 
 const ContainerWallet = styled.div`
     display: flex;
@@ -26,11 +27,14 @@ const LeftColumn = styled.div`
 `;
 
 const WalletPage: React.FC = () => {
+    const wallet = useMemo(buildInitialWallet, []);
+    const balance = useMemo(() => calculateWalletBalance(wallet), [wallet]);
+
     return (
         <ContainerWallet>
             <LeftColumn>
-                <WalletAccountHeader />
-                <WalletScrollBox coins={walletMockData} />
+                <WalletAccountHeader balance={balance} />
+                <WalletScrollBox coins={wallet} />
             </LeftColumn>
         </ContainerWallet>
     );

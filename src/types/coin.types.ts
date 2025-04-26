@@ -19,6 +19,11 @@ export interface CoinHeaderProps {
 
 export interface WalletCoinItem extends Coin {
     rank: number;
-    holdings: string;
-    value: string;
+    holdings: number;
+    value: number;
+}
+
+export interface WalletBalance {
+    totalValueUSD: number;
+    totalHoldingsBTC: number;
 }

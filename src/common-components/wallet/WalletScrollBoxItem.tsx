@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { WalletCoinItem } from "../../types/coin.types.ts";
+import {formatCompact} from "../../utils/number.ts";
 
-interface Props {
-    coin: WalletCoinItem;
-    index: number;
-}
+// interface Props {
+//     coin: WalletCoinItem;
+//     index: number;
+// }
 
 const ItemContainer = styled.div`
     display: flex;
@@ -21,21 +22,31 @@ const Rank = styled.div<{ bg: string }>`
     background-color: ${(props) => props.bg};
     color: white;
     font-weight: bold;
-    width: 3rem;
+
+    //width: 3rem;
+    min-width: 2rem;
+    max-width: 2.5rem;
     height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    font-variant-numeric: tabular-nums;
+
+    flex-shrink: 0;
 `;
+
 
 const CoinInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 0.8rem;
     font-size: 2vh;
-    padding: 0 1.5rem;
-    flex: 1;
+    padding: 0 0.8rem;
+    min-width: 6rem;
+    flex: 1 1 auto;
 `;
 
 const Logo = styled.img`
@@ -52,6 +63,8 @@ const Holdings = styled.div`
     width: 6rem;
     text-align: center;
     color: #2e2e2e;
+    font-size: 2vh;
+    
 `;
 
 const Value = styled.div`
@@ -59,10 +72,14 @@ const Value = styled.div`
     text-align: right;
     font-weight: bold;
     color: #1a1a1a;
-    padding-right: 1.5rem;
+    padding-right: 0.5rem;
+    font-size: 2vh;
 `;
 
-const WalletScrollBoxItem: React.FC<Props> = ({ coin }) => {
+const WalletScrollBoxItem: React.FC<{ coin: WalletCoinItem }> = ({ coin }) => {
+    const displayHoldings = formatCompact(coin.holdings);
+    const displayValue    = formatCompact(coin.value);
+
     return (
         <ItemContainer>
             <Rank bg={coin.color}>{coin.rank}</Rank>
@@ -70,8 +87,8 @@ const WalletScrollBoxItem: React.FC<Props> = ({ coin }) => {
                 <Logo src={coin.logo} alt={coin.name} />
                 <Name>{coin.name}</Name>
             </CoinInfo>
-            <Holdings>{coin.holdings}</Holdings>
-            <Value>{coin.value}</Value>
+            <Holdings title={coin.holdings.toString()}>{displayHoldings}</Holdings>
+            <Value title={coin.value.toString()}>{displayValue}</Value>
         </ItemContainer>
     );
 };

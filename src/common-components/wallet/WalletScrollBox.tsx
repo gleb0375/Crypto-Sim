@@ -25,24 +25,46 @@ const ScrollBoxContainer = styled.div`
     min-height:0;
 `;
 
+
 const HeaderRow = styled.div`
-    display:grid;
-    grid-template-columns:${COL_TEMPLATE};
-    align-items:center;
+    display: grid;
+    grid-template-columns: ${COL_TEMPLATE};
+    align-items: center;
 
-    padding:.5rem 1rem;
-    font-weight:700;
-    font-size:clamp(.7rem,3.5vw,1rem);
-    color:#bcbcbc;
+    padding: 0.5rem;
+    font-weight: 700;
+    font-size: clamp(0.7rem, 3.5vw, 0.9rem);
+    color: #bcbcbc;
 
-    border-bottom:1px solid #444;
-    background:#1e1e24;
-    position:sticky;top:0;z-index:1;
+    border-bottom: 1px solid #444;
+    background: #1e1e24;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    
+    span:nth-child(1) {
+        padding-left: 0.2rem;
+    }
+    
+    span:nth-child(2) {
+        justify-content: flex-start;
+    }
 
-    @media (max-width:480px){
-        grid-template-columns:${MOBILE_COL_TEMPLATE};
+    span:nth-child(3) {
+        padding-right: 1.5vh;
+        justify-self: center;
+    }
+
+    span:nth-child(4) {
+        justify-self: end;
+        padding-right: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: ${MOBILE_COL_TEMPLATE};
     }
 `;
+
 
 const ItemsContainer = styled.div`
     flex:1;
