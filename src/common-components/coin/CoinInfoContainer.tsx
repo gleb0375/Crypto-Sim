@@ -5,6 +5,7 @@ import CoinDropdownList from "./CoinDropdownList";
 import { Coin, CoinHeaderProps } from "../../types/coin.types.ts";
 
 const HeaderContainer = styled.div`
+    height: 4vh;
     display: flex;
     background-color: #16161b;
     color: #ffffff;

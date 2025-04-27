@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { useKlines } from "../hooks/useKlines";
 import { useTickerPrice } from "../hooks/useTickerPrice";
 import TradingChart from "../common-components/chart/TradingChart";
-import CoinInfoContainer from "../common-components/coin/CoinInfoContainer.tsx";
-import TimeIntervalContainer from "../common-components/chart/TimeIntervalContainer.tsx";
-import { Coin } from "../types/coin.types.ts";
-import { COINS } from "../constants/coins.constants.ts";
-import { TIME_INTERVALS } from "../constants/market.constans.ts";
-import Loader from "../common-components/loader/Loader.tsx";
+import CoinInfoContainer from "../common-components/coin/CoinInfoContainer";
+import TimeIntervalContainer from "../common-components/chart/TimeIntervalContainer";
+import Loader from "../common-components/loader/Loader";
+import TradePanel from "../common-components/trade/TradePanel.tsx";
+import { Coin } from "../types/coin.types";
+import { COINS } from "../constants/coins.constants";
+import { TIME_INTERVALS } from "../constants/market.constans";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -39,24 +40,35 @@ const ChartContainer = styled.div`
     overflow: auto;
 `;
 
-const CoinDetailPage: React.FC = () => {
+const RightPanel = styled.div`
+    width: 25%;
+    min-width: 25vh;
+    max-width: 35vh;
+
+    height: 56vh;
+    margin-top: calc(4vh/* height CoinInfoContainer */
+    + 2vh/* margin-bottom */
+    + 3vh/* height TimeIntervalContainer */
+    + 2vh /* margin-bottom */);
+
+    background-color: #1e1e24;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(34, 32, 32, 0.4);
+`;
+
+const TradePage: React.FC = () => {
     const [selectedCoin, setSelectedCoin] = useState<Coin>(COINS[0]);
     const [selectedInterval, setSelectedInterval] = useState("1m");
-    const [livePrice, setLivePrice] = useState<number | undefined>(undefined);
+    const [livePrice, setLivePrice] = useState<number>();
 
     const { data, error, isLoading } = useKlines(selectedCoin.symbol, selectedInterval);
     const { data: tickerData } = useTickerPrice(selectedCoin.symbol);
 
     const displayPrice = livePrice ?? (tickerData ? parseFloat(tickerData.price) : undefined);
 
-
-    if (isLoading) {
-        return <Loader />;
-    }
-
-    if (error) {
-        return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
-    }
+    if (isLoading) return <Loader />;
+    if (error)     return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
 
     return (
         <ContainerCoinDetail>
@@ -65,28 +77,36 @@ const CoinDetailPage: React.FC = () => {
                     coins={COINS}
                     selectedCoin={selectedCoin}
                     price={displayPrice}
-                    onSelectCoin={(coin) => setSelectedCoin(coin)}
+                    onSelectCoin={setSelectedCoin}
                 />
+
                 <TimeIntervalContainer
                     intervals={TIME_INTERVALS}
                     selectedInterval={selectedInterval}
                     onSelect={setSelectedInterval}
                 />
+
                 <ChartContainer>
-                    {data ? (
-                        <TradingChart
+                    {data
+                        ? <TradingChart
                             data={data}
                             symbol={selectedCoin.symbol}
                             interval={selectedInterval}
                             onPriceUpdate={setLivePrice}
                         />
-                    ) : (
-                        <div>No data</div>
-                    )}
+                        : <div>No data</div>
+                    }
                 </ChartContainer>
             </LeftPanel>
+
+            <RightPanel>
+                <TradePanel
+                    symbol={selectedCoin.symbol}
+                    price={displayPrice}
+                />
+            </RightPanel>
         </ContainerCoinDetail>
     );
 };
 
-export default CoinDetailPage;
+export default TradePage;

@@ -12,6 +12,7 @@ const Container = styled.div`
     gap: 1rem;
     margin-bottom: 2vh;
     margin-left: 2vh;
+    height: 3vh;
 `;
 
 const TimeButton = styled.button<{ selected: boolean }>`

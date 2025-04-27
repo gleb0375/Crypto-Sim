@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { ROUTES } from './constants/routes.ts';
 import Header from "./common-components/header/header.tsx";
-import CoinDetailPage from "./pages/CoinDetailPage.tsx";
+import TradePage from "./pages/TradePage.tsx";
 import { GlobalStyle } from './styles/GlobalStyles';
 import WalletPage from "./pages/WalletPage.tsx";
 
@@ -22,7 +22,7 @@ const App: React.FC = () => {
             <Header />
             <ContentContainer>
                 <Routes>
-                    <Route path={ROUTES.COIN_DETAIL} element={<CoinDetailPage />} />
+                    <Route path={ROUTES.COIN_DETAIL} element={<TradePage />} />
                     <Route path={ROUTES.WALLET} element={<WalletPage />} />
                     {/*<Route path={ROUTES.TRADING} element={<TradingPage />} />*/}
                 </Routes>
