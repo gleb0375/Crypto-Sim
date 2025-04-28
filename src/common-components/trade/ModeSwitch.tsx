@@ -6,7 +6,7 @@ const SwitchContainer = styled.div<{ mode: "buy" | "sell" }>`
     position: relative;
     width: 100%;
     height: 4vh;
-    background: #4c4c4c; /* фон «неактивного» состояния */
+    background: #4c4c4c;
     border-radius: 0.25rem;
     cursor: pointer;
     user-select: none;

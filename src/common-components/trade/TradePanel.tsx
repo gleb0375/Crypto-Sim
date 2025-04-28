@@ -6,11 +6,13 @@ import ModeSwitch from "./ModeSwitch";
 const PanelContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100%;           /* тянемся на всю высоту RightPanel */
+    height: 100%;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
 `;
 
 const Section = styled.div`
-    flex: 1;                /* занимает всё оставшееся пространство */
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -19,17 +21,79 @@ const Section = styled.div`
 
 const Label = styled.label`
     color: #aaa;
-    font-size: 0.8rem;
+    font-size: 1.7vh;
 `;
 
-const Input = styled.input`
-    width: 100%;
-    height: 3vh;
-    border: 1px solid #444;
-    border-radius: 4px;
-    background: #1e1e24;
+const Row = styled.div`
+    padding-top: 1.5vh;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+const BalanceValue = styled.div`
     color: #fff;
     font-size: 0.9rem;
+`;
+
+const UnitWrapper = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
+const UnitInput = styled.input`
+    width: 100%;
+    height: 5vh;
+    background: #27282c;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.8vh;
+    line-height: 5vh;
+    font-family: inherit;
+    font-weight: inherit;
+    color: #fff;
+    padding-left: 12px;
+    padding-right: 3rem;
+    box-sizing: border-box;
+    outline: none;
+    user-select: none;
+    pointer-events: none;
+`;
+
+const UnitInside = styled.span`
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8vh;
+    font-family: inherit;
+    font-weight: inherit;
+    color: #fff;
+    pointer-events: none;
+`;
+
+const EditableInput = styled.input`
+    width: 100%;
+    height: 5vh;
+    background: #27282c;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.8vh;
+    line-height: 5vh;
+    font-family: inherit;
+    font-weight: inherit;
+    color: #fff;
+    padding-left: 12px;
+    box-sizing: border-box;
+    outline: none;
+
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 `;
 
 const Slider = styled.input.attrs({ type: "range", min: 0, max: 100 })`
@@ -37,21 +101,21 @@ const Slider = styled.input.attrs({ type: "range", min: 0, max: 100 })`
 `;
 
 const Button = styled.button`
-  width: 100%;
-  padding: 0.7vh;
-  background: #44a868;
-  color: white;
-  font-size: 3vh;
-  font-family: 'Inter','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: 500;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+    width: 100%;
+    padding: 0.7vh;
+    background: #44a868;
+    color: white;
+    font-size: 3vh;
+    font-family: inherit;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
 `;
 
 interface Props {
@@ -65,32 +129,35 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
     const [percent, setPercent] = useState(0);
 
     const orderValue = (price ?? 0) * (parseFloat(qty) || 0);
+    const availableBalanceDisplay = `… ${symbol}`;
 
     return (
         <PanelContainer>
             <ModeSwitch mode={mode} onChange={setMode} />
 
             <Section>
-                <div>
+                <Row>
                     <Label>Available Balance</Label>
-                    <div>… {symbol}</div>
-                </div>
+                    <BalanceValue>{availableBalanceDisplay}</BalanceValue>
+                </Row>
 
                 <div>
                     <Label>Order Price</Label>
-                    <Input
-                        type="text"
-                        readOnly
-                        value={price?.toFixed(2) ?? "--"}
-                    />{" "}
-                    {symbol}
+                    <UnitWrapper>
+                        <UnitInput
+                            type="text"
+                            readOnly
+                            value={price?.toFixed(2) ?? "--"}
+                        />
+                        <UnitInside>{symbol}</UnitInside>
+                    </UnitWrapper>
                 </div>
 
                 <div>
                     <Label>Qty</Label>
-                    <Input
+                    <EditableInput
                         type="number"
-                        placeholder={symbol}
+                        placeholder="0"
                         value={qty}
                         onChange={(e) => setQty(e.target.value)}
                     />
@@ -98,16 +165,19 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
 
                 <Slider
                     value={percent}
-                    onChange={(e) => {
-                        const p = Number(e.target.value);
-                        setPercent(p);
-                        // расчёт qty от баланса позже
-                    }}
+                    onChange={(e) => setPercent(Number(e.target.value))}
                 />
 
                 <div>
                     <Label>Order Value</Label>
-                    <Input type="text" readOnly value={orderValue.toFixed(2)} /> USDT
+                    <UnitWrapper>
+                        <UnitInput
+                            type="text"
+                            readOnly
+                            value={orderValue.toFixed(2)}
+                        />
+                        <UnitInside>USDT</UnitInside>
+                    </UnitWrapper>
                 </div>
             </Section>
 
