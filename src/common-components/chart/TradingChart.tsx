@@ -105,7 +105,14 @@ const TradingChart: React.FC<Props> = ({ data, symbol, interval, onPriceUpdate }
             }
         };
 
+        const handleResize = () => {
+            chart.resize();
+        };
+
+        window.addEventListener("resize", handleResize);
+
         return () => {
+            window.removeEventListener("resize", handleResize);
             ws.close();
             dispose("k-line-chart");
         };

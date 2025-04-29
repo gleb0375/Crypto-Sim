@@ -57,6 +57,20 @@ const DropdownButton = styled.div`
     }
 `;
 
+const DropdownIcon = styled.div`
+    width: 3.5vh;
+    height: 3.5vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+`;
+
 const CoinInfoContainer: React.FC<CoinHeaderProps> = ({
                                                           coins,
                                                           selectedCoin,
@@ -100,7 +114,9 @@ const CoinInfoContainer: React.FC<CoinHeaderProps> = ({
         <HeaderContainer>
             <Section>
                 <DropdownButton onClick={toggleDropdown}>
-                    {isOpen ? <IoIosArrowDropup size={28} /> : <IoIosArrowDropdown size={28} />}
+                    <DropdownIcon>
+                        {isOpen ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
+                    </DropdownIcon>
                 </DropdownButton>
             </Section>
 

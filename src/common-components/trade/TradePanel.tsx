@@ -1,7 +1,8 @@
 // src/common-components/trade/TradePanel.tsx
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import ModeSwitch from "./ui/ModeSwitch";
+import {useWallet} from "../../contexts/WalletContext.tsx";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -124,8 +125,35 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
     const [mode, setMode] = useState<"buy" | "sell">("buy");
     const [qty, setQty] = useState("");
 
+    const { getBalance, executeTrade } = useWallet();
+
+    const availableBalance = useMemo(() => {
+        return mode === "buy" ? getBalance("USDT") : getBalance(symbol);
+    }, [mode, symbol, getBalance]);
+
+    const availableBalanceDisplay = availableBalance.toLocaleString("en-US", { maximumFractionDigits: 2 });
+
     const orderValue = (price ?? 0) * (parseFloat(qty) || 0);
-    const availableBalanceDisplay = `… ${symbol}`;
+
+    const handleExecuteTrade = () => {
+        if (!price) return;
+
+        const amount = parseFloat(qty);
+        if (isNaN(amount) || amount <= 0) return;
+
+        if (mode === "buy" && amount * price > getBalance("USDT")) {
+            alert("Insufficient USDT balance");
+            return;
+        }
+
+        if (mode === "sell" && amount > getBalance(symbol)) {
+            alert(`Insufficient ${symbol} balance`);
+            return;
+        }
+
+        executeTrade(mode, symbol, price, amount);
+        setQty("");
+    };
 
     return (
         <PanelContainer>
@@ -145,7 +173,7 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
                             readOnly
                             value={price?.toFixed(2) ?? "--"}
                         />
-                        <UnitInside>{symbol}</UnitInside>
+                        <UnitInside>USDT</UnitInside>
                     </UnitWrapper>
                 </div>
 
@@ -172,7 +200,7 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
                 </div>
             </Section>
 
-            <ActionButton mode={mode} disabled={!qty || !price}>
+            <ActionButton mode={mode} disabled={!qty || !price} onClick={handleExecuteTrade}>
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
             </ActionButton>
         </PanelContainer>

@@ -37,7 +37,6 @@ const ChartContainer = styled.div`
     align-items: center;
     color: #1a2531;
     font-size: 1.5rem;
-    overflow: auto;
 `;
 
 const RightPanel = styled.div`

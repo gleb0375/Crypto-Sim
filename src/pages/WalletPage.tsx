@@ -1,14 +1,13 @@
-// src/pages/WalletPage.tsx
-
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
 import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
-import PieWalletChart from "../common-components/wallet/PieWalletChart";
+//import PieWalletChart from "../common-components/wallet/PieWalletChart";
 import { LEFT_COLUMN_WIDTH } from "../constants/wallet.constants.ts";
 import { calculateWalletBalance } from "../utils/calculateWalletBalance.ts";
-import { buildInitialWallet } from "../utils/buildInitialWallet.ts";
-import { WalletCoinItem } from "../types/coin.types.ts";
+//import { buildInitialWallet } from "../utils/buildInitialWallet.ts";
+//import { WalletCoinItem } from "../types/coin.types.ts";
+import {useWallet} from "../contexts/WalletContext.tsx";
 
 const ContainerWallet = styled.div`
   display: flex;
@@ -30,29 +29,24 @@ const LeftColumn = styled.div`
     gap: 2rem;
 `;
 
-const RightColumn = styled.div`
-    flex: 1;
-    padding-left: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
+// const RightColumn = styled.div`
+//     flex: 1;
+//     padding-left: 2rem;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `;
 
 const WalletPage: React.FC = () => {
-    // инициализируем «кошелёк»
-    const wallet = useMemo(buildInitialWallet, []);
-
-    // считаем баланс
+    const { wallet } = useWallet();
     const balance = useMemo(() => calculateWalletBalance(wallet), [wallet]);
 
-    // подготавливаем данные для пай-чарта
-    const pieData = useMemo(() => {
-        // можем фильтровать или группировать «USDT» в отдельный кусок, если нужно
+    /*const pieData = useMemo(() => {
         return wallet.map((item: WalletCoinItem) => ({
             name: item.name,
             value: item.value,
         }));
-    }, [wallet]);
+    }, [wallet]);*/
 
     return (
         <ContainerWallet>
@@ -61,10 +55,10 @@ const WalletPage: React.FC = () => {
                 <WalletScrollBox coins={wallet} />
             </LeftColumn>
 
-            <RightColumn>
-                {/* передаём реальные pieData */}
-                <PieWalletChart data={pieData} />
-            </RightColumn>
+            {/*<RightColumn>*/}
+            {/*    /!* передаём реальные pieData *!/*/}
+            {/*    <PieWalletChart data={pieData} />*/}
+            {/*</RightColumn>*/}
         </ContainerWallet>
     );
 };
