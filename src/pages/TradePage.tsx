@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useKlines } from "../hooks/useKlines";
 import { useTickerPrice } from "../hooks/useTickerPrice";
@@ -44,13 +44,8 @@ const RightPanel = styled.div`
     width: 25%;
     min-width: 25vh;
     max-width: 35vh;
-
     height: 56vh;
-    margin-top: calc(4vh/* height CoinInfoContainer */
-    + 2vh/* margin-bottom */
-    + 3vh/* height TimeIntervalContainer */
-    + 2vh /* margin-bottom */);
-
+    margin-top: calc(4vh + 2vh + 3vh + 2vh);
     background-color: #1e1e24;
     border-radius: 1rem;
     padding: 1rem;
@@ -65,10 +60,16 @@ const TradePage: React.FC = () => {
     const { data, error, isLoading } = useKlines(selectedCoin.symbol, selectedInterval);
     const { data: tickerData } = useTickerPrice(selectedCoin.symbol);
 
-    const displayPrice = livePrice ?? (tickerData ? parseFloat(tickerData.price) : undefined);
+    useEffect(() => {
+        if (tickerData && livePrice === undefined) {
+            setLivePrice(parseFloat(tickerData.price));
+        }
+    }, [tickerData, livePrice]);
+
+    const displayPrice = livePrice;
 
     if (isLoading) return <Loader />;
-    if (error)     return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
+    if (error) return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
 
     return (
         <ContainerCoinDetail>
@@ -77,7 +78,10 @@ const TradePage: React.FC = () => {
                     coins={COINS}
                     selectedCoin={selectedCoin}
                     price={displayPrice}
-                    onSelectCoin={setSelectedCoin}
+                    onSelectCoin={(coin) => {
+                        setSelectedCoin(coin);
+                        setLivePrice(undefined);
+                    }}
                 />
 
                 <TimeIntervalContainer
@@ -87,15 +91,16 @@ const TradePage: React.FC = () => {
                 />
 
                 <ChartContainer>
-                    {data
-                        ? <TradingChart
+                    {data ? (
+                        <TradingChart
                             data={data}
                             symbol={selectedCoin.symbol}
                             interval={selectedInterval}
                             onPriceUpdate={setLivePrice}
                         />
-                        : <div>No data</div>
-                    }
+                    ) : (
+                        <div>No data</div>
+                    )}
                 </ChartContainer>
             </LeftPanel>
 

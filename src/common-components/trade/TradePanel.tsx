@@ -1,7 +1,7 @@
 // src/common-components/trade/TradePanel.tsx
 import React, { useState } from "react";
 import styled from "styled-components";
-import ModeSwitch from "./ModeSwitch";
+import ModeSwitch from "./ui/ModeSwitch";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -96,21 +96,18 @@ const EditableInput = styled.input`
     }
 `;
 
-const Slider = styled.input.attrs({ type: "range", min: 0, max: 100 })`
-    width: 100%;
-`;
-
-const Button = styled.button`
+const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
     width: 100%;
     padding: 0.7vh;
-    background: #44a868;
+    background: ${({ mode }) => (mode === "buy" ? "#44a868" : "#e15241")};
     color: white;
     font-size: 3vh;
     font-family: inherit;
     font-weight: 500;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     cursor: pointer;
+    transition: background 0.2s ease;
 
     &:disabled {
         opacity: 0.5;
@@ -126,7 +123,6 @@ interface Props {
 const TradePanel: React.FC<Props> = ({ symbol, price }) => {
     const [mode, setMode] = useState<"buy" | "sell">("buy");
     const [qty, setQty] = useState("");
-    const [percent, setPercent] = useState(0);
 
     const orderValue = (price ?? 0) * (parseFloat(qty) || 0);
     const availableBalanceDisplay = `… ${symbol}`;
@@ -163,11 +159,6 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
                     />
                 </div>
 
-                <Slider
-                    value={percent}
-                    onChange={(e) => setPercent(Number(e.target.value))}
-                />
-
                 <div>
                     <Label>Order Value</Label>
                     <UnitWrapper>
@@ -181,9 +172,9 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
                 </div>
             </Section>
 
-            <Button disabled={!qty || !price}>
+            <ActionButton mode={mode} disabled={!qty || !price}>
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
-            </Button>
+            </ActionButton>
         </PanelContainer>
     );
 };
