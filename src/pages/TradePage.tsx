@@ -104,13 +104,15 @@ const MobileTradeModal = styled.div`
         background-color: #1e1e24;
         z-index: 2000;
         overflow-y: auto;
-        padding: 2rem 1rem;
     }
 `;
 
 const MobileTradeWrapper = styled.div`
+    margin-top: 2rem;
+    padding: 1rem;
     width: 100%;
     max-width: 420px;
+    box-sizing: border-box;
 `;
 
 const CloseButton = styled.button`

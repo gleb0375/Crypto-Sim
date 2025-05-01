@@ -114,7 +114,12 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
         opacity: 0.5;
         cursor: default;
     }
+
+    @media (max-width: 768px) {
+        margin-top: 5vh;
+    }
 `;
+
 
 interface Props {
     symbol: string;
