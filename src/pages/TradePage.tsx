@@ -10,6 +10,7 @@ import TradePanel from "../common-components/trade/TradePanel.tsx";
 import { Coin } from "../types/coin.types";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
+import {IoMdClose} from "react-icons/io";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -41,16 +42,18 @@ const LeftPanel = styled.div`
 const ChartContainer = styled.div`
     width: 100vh;
     height: 60vh;
-    background-color: #101014;
+    background-color: #16161b;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #1a2531;
     font-size: 1.5rem;
+    border: 4px solid #1e1e24;
+    border-radius: 10px;
 
     @media (max-width: 768px) {
+        border: none;
         width: 100%;
-        height: 50vh;
+        height: 65vh;
     }
 `;
 
@@ -58,10 +61,10 @@ const RightPanel = styled.div`
     width: 25%;
     min-width: 25vh;
     max-width: 35vh;
-    height: 56vh;
+    height: 57vh;
     margin-top: calc(4vh + 2vh + 3vh + 2vh);
     background-color: #1e1e24;
-    border-radius: 1rem;
+    border-radius: 10px;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(34, 32, 32, 0.4);
 
@@ -82,7 +85,7 @@ const MobileTradeButton = styled.button`
         padding: 1rem;
         background-color: #28a745;
         color: white;
-        font-size: 1.6rem;
+        font-size: 3.5vh;
         border: none;
         border-radius: 0.8rem;
         z-index: 1000;
@@ -108,7 +111,7 @@ const MobileTradeModal = styled.div`
 `;
 
 const MobileTradeWrapper = styled.div`
-    margin-top: 2rem;
+    margin-top: 5rem;
     padding: 1rem;
     width: 100%;
     max-width: 420px;
@@ -116,14 +119,17 @@ const MobileTradeWrapper = styled.div`
 `;
 
 const CloseButton = styled.button`
-    align-self: flex-end;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
     color: #fff;
     font-size: 2rem;
     cursor: pointer;
-    margin-bottom: 1rem;
+    z-index: 10;
 `;
+
 
 const TradePage: React.FC = () => {
     const [selectedCoin, setSelectedCoin] = useState<Coin>(COINS[0]);
@@ -180,7 +186,7 @@ const TradePage: React.FC = () => {
                 </LeftPanel>
 
                 <RightPanel>
-                    <TradePanel symbol={selectedCoin.symbol} price={displayPrice} />
+                    <TradePanel symbol={selectedCoin.symbol} name={selectedCoin.name} price={displayPrice} />
                 </RightPanel>
             </ContainerCoinDetail>
 
@@ -190,9 +196,11 @@ const TradePage: React.FC = () => {
 
             {isMobileTradeOpen && (
                 <MobileTradeModal>
+                    <CloseButton onClick={() => setIsMobileTradeOpen(false)}>
+                        <IoMdClose />
+                    </CloseButton>
                     <MobileTradeWrapper>
-                        <CloseButton onClick={() => setIsMobileTradeOpen(false)}>×</CloseButton>
-                        <TradePanel symbol={selectedCoin.symbol} price={displayPrice} />
+                        <TradePanel symbol={selectedCoin.symbol} name={selectedCoin.name} price={displayPrice} />
                     </MobileTradeWrapper>
                 </MobileTradeModal>
             )}

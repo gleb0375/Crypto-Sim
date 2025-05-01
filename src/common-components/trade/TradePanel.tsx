@@ -1,5 +1,5 @@
 // src/common-components/trade/TradePanel.tsx
-import React, { useState, useMemo } from "react";
+import React, {useState, useMemo, useRef, useEffect} from "react";
 import styled from "styled-components";
 import ModeSwitch from "./ui/ModeSwitch";
 import {useWallet} from "../../contexts/WalletContext.tsx";
@@ -123,12 +123,16 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
 
 interface Props {
     symbol: string;
+    name: string;
     price?: number;
 }
 
-const TradePanel: React.FC<Props> = ({ symbol, price }) => {
+const TradePanel: React.FC<Props> = ({ symbol, name, price }) => {
     const [mode, setMode] = useState<"buy" | "sell">("buy");
     const [qty, setQty] = useState("");
+    const [orderValue, setOrderValue] = useState("");
+
+    const lastChanged = useRef<"qty" | "orderValue" | null>(null);
 
     const { getBalance, executeTrade } = useWallet();
 
@@ -136,9 +140,45 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
         return mode === "buy" ? getBalance("USDT") : getBalance(symbol);
     }, [mode, symbol, getBalance]);
 
-    const availableBalanceDisplay = availableBalance.toLocaleString("en-US", { maximumFractionDigits: 2 });
+    const availableBalanceDisplay = availableBalance.toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+    });
 
-    const orderValue = (price ?? 0) * (parseFloat(qty) || 0);
+    useEffect(() => {
+        if (!price) return;
+
+        if (lastChanged.current === "qty") {
+            const parsedQty = parseFloat(qty);
+            if (!isNaN(parsedQty)) {
+                setOrderValue((parsedQty * price).toFixed(2));
+            } else {
+                setOrderValue("");
+            }
+        }
+    }, [qty, price]);
+
+    useEffect(() => {
+        if (!price) return;
+
+        if (lastChanged.current === "orderValue") {
+            const parsedValue = parseFloat(orderValue);
+            if (!isNaN(parsedValue) && price > 0) {
+                setQty((parsedValue / price).toFixed(6));
+            } else {
+                setQty("");
+            }
+        }
+    }, [orderValue, price]);
+
+    const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        lastChanged.current = "qty";
+        setQty(e.target.value);
+    };
+
+    const handleOrderValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        lastChanged.current = "orderValue";
+        setOrderValue(e.target.value);
+    };
 
     const handleExecuteTrade = () => {
         if (!price) return;
@@ -158,6 +198,8 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
 
         executeTrade(mode, symbol, price, amount);
         setQty("");
+        setOrderValue("");
+        lastChanged.current = null;
     };
 
     return (
@@ -167,7 +209,9 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
             <Section>
                 <Row>
                     <Label>Available Balance</Label>
-                    <BalanceValue>{availableBalanceDisplay}</BalanceValue>
+                    <BalanceValue>
+                        {availableBalanceDisplay} {mode === "buy" ? "USDT" : name}
+                    </BalanceValue>
                 </Row>
 
                 <div>
@@ -184,28 +228,35 @@ const TradePanel: React.FC<Props> = ({ symbol, price }) => {
 
                 <div>
                     <Label>Qty</Label>
-                    <EditableInput
-                        type="number"
-                        placeholder="0"
-                        value={qty}
-                        onChange={(e) => setQty(e.target.value)}
-                    />
+                    <UnitWrapper>
+                        <EditableInput
+                            type="number"
+                            placeholder="0"
+                            value={qty}
+                            onChange={handleQtyChange}
+                        />
+                    </UnitWrapper>
                 </div>
 
                 <div>
                     <Label>Order Value</Label>
                     <UnitWrapper>
-                        <UnitInput
-                            type="text"
-                            readOnly
-                            value={orderValue.toFixed(2)}
+                        <EditableInput
+                            type="number"
+                            placeholder="0"
+                            value={orderValue}
+                            onChange={handleOrderValueChange}
                         />
                         <UnitInside>USDT</UnitInside>
                     </UnitWrapper>
                 </div>
             </Section>
 
-            <ActionButton mode={mode} disabled={!qty || !price} onClick={handleExecuteTrade}>
+            <ActionButton
+                mode={mode}
+                disabled={!qty || !price}
+                onClick={handleExecuteTrade}
+            >
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
             </ActionButton>
         </PanelContainer>
