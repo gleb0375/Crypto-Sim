@@ -8,7 +8,6 @@ export const calculateWalletBalance = (
 
     const totalHoldingsBTC = coins.reduce((sum, coin) => {
         if (coin.symbol === "BTCUSDT") return sum + coin.holdings;
-        //if (coin.symbol === "USDT") return sum;
         return sum + (coin.value / btcPrice);
     }, 0);
 

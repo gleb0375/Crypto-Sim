@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import {LEFT_COLUMN_WIDTH} from "../../constants/wallet.constants.ts";
 import {WalletBalance} from "../../types/coin.types.ts";
+import {formatBtcWithSpaces, formatUsdWithSpaces} from "../../utils/number.ts";
 
 interface Props {
     balance: WalletBalance;
@@ -42,8 +43,8 @@ const WalletAccountHeader: React.FC<Props> = ({balance}) => {
     return (
         <HeaderBox>
             <Title>Total Balance</Title>
-            <BalanceUSD>${balance.totalValueUSD.toFixed(2)}</BalanceUSD>
-            <BalanceBTC>= {balance.totalHoldingsBTC.toFixed(8)} BTC</BalanceBTC>
+            <BalanceUSD>${formatUsdWithSpaces(balance.totalValueUSD)}</BalanceUSD>
+            <BalanceBTC>= {formatBtcWithSpaces(balance.totalHoldingsBTC)} BTC</BalanceBTC>
         </HeaderBox>
     );
 };
