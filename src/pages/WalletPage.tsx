@@ -8,6 +8,7 @@ import { calculateWalletBalance } from "../utils/calculateWalletBalance.ts";
 //import { buildInitialWallet } from "../utils/buildInitialWallet.ts";
 //import { WalletCoinItem } from "../types/coin.types.ts";
 import {useWallet} from "../contexts/WalletContext.tsx";
+import {useTickerPrice} from "../hooks/useTickerPrice.ts";
 
 const ContainerWallet = styled.div`
   display: flex;
@@ -39,7 +40,10 @@ const LeftColumn = styled.div`
 
 const WalletPage: React.FC = () => {
     const { wallet } = useWallet();
-    const balance = useMemo(() => calculateWalletBalance(wallet), [wallet]);
+    const { data: btcTicker } = useTickerPrice("BTCUSDT");
+    const btcPrice = parseFloat(btcTicker?.price || "0");
+
+    const balance = useMemo(() => calculateWalletBalance(wallet, btcPrice), [wallet, btcPrice]);
 
     /*const pieData = useMemo(() => {
         return wallet.map((item: WalletCoinItem) => ({

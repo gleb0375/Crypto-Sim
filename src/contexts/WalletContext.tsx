@@ -1,7 +1,8 @@
 // src/contexts/WalletContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import {WalletCoinItem} from "../types/coin.types.ts";
-import {buildInitialWallet} from "../utils/buildInitialWallet.ts";
+import { WalletCoinItem } from "../types/coin.types.ts";
+import { buildInitialWallet } from "../utils/buildInitialWallet.ts";
+import { useAllTickerPrices } from "../hooks/useAllTickerPrices.ts"; // импортируем хук
 
 type TradeMode = "buy" | "sell";
 
@@ -21,9 +22,28 @@ export const WalletProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         return saved ? JSON.parse(saved) : buildInitialWallet();
     });
 
+    const { prices } = useAllTickerPrices(); // текущие цены с Binance
+
+    // обновляем localStorage при изменении кошелька
     useEffect(() => {
         localStorage.setItem(WALLET_KEY, JSON.stringify(wallet));
     }, [wallet]);
+
+    // обновляем стоимость монет по актуальной цене
+    useEffect(() => {
+        if (!prices || Object.keys(prices).length === 0) return;
+
+        setWallet((prevWallet) =>
+            prevWallet.map((item) => {
+                if (item.symbol === "USDT") return item;
+
+                const livePrice = prices[item.symbol];
+                if (!livePrice) return item;
+
+                return { ...item, value: item.holdings * livePrice };
+            })
+        );
+    }, [prices]);
 
     const getBalance = (symbol: string) =>
         wallet.find((item) => item.symbol === symbol)?.holdings ?? 0;
