@@ -89,8 +89,8 @@ const WalletScrollBox:React.FC<Props> = ({ coins }) => (
         </HeaderRow>
 
         <ItemsContainer>
-            {coins.map((c)=>(
-                <WalletScrollBoxItem key={c.symbol} coin={c}/>
+            {coins.map((c,i)=>(
+                <WalletScrollBoxItem key={c.symbol} coin={c}  index={i + 1}/>
             ))}
         </ItemsContainer>
     </ScrollBoxContainer>

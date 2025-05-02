@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import {LEFT_COLUMN_WIDTH} from "../../constants/wallet.constants.ts";
-import {WalletBalance} from "../../types/coin.types.ts";
-import {formatBtcWithSpaces, formatUsdWithSpaces} from "../../utils/number.ts";
+import { LEFT_COLUMN_WIDTH } from "../../constants/wallet.constants.ts";
+import { WalletBalance } from "../../types/coin.types.ts";
+import { formatBtcWithSpaces, formatUsdWithSpaces } from "../../utils/number.ts";
+import { IoIosCheckboxOutline, IoIosSquareOutline } from "react-icons/io";
 
 interface Props {
     balance: WalletBalance;
+    hideZero: boolean;
+    onToggleHideZero: () => void;
 }
 
 const HeaderBox = styled.div`
@@ -18,6 +21,7 @@ const HeaderBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    position: relative;
 `;
 
 const Title = styled.div`
@@ -39,12 +43,47 @@ const BalanceBTC = styled.div`
     color: #888;
 `;
 
-const WalletAccountHeader: React.FC<Props> = ({balance}) => {
+const HideZeroContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    align-self: flex-end;
+    gap: 0.5rem;
+`;
+
+const IconWrapper = styled.div`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        font-size: 1.4rem;
+        color: #bbb;
+        transition: color 0.2s;
+    }
+`;
+
+const HideZeroLabel = styled.span`
+    color: #bbb;
+    font-size: 1.5vh;
+    user-select: none;
+    pointer-events: none;
+`;
+
+const WalletAccountHeader: React.FC<Props> = ({ balance, hideZero, onToggleHideZero }) => {
     return (
         <HeaderBox>
             <Title>Total Balance</Title>
             <BalanceUSD>${formatUsdWithSpaces(balance.totalValueUSD)}</BalanceUSD>
             <BalanceBTC>= {formatBtcWithSpaces(balance.totalHoldingsBTC)} BTC</BalanceBTC>
+
+            <HideZeroContainer>
+                <IconWrapper onClick={onToggleHideZero}>
+                    {hideZero ? <IoIosCheckboxOutline /> : <IoIosSquareOutline />}
+                </IconWrapper>
+                <HideZeroLabel>Hide Zero Balances</HideZeroLabel>
+            </HideZeroContainer>
         </HeaderBox>
     );
 };

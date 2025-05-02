@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { WalletCoinItem } from "../../types/coin.types.ts";
 import {formatCompact} from "../../utils/number.ts";
 
-// interface Props {
-//     coin: WalletCoinItem;
-//     index: number;
-// }
+interface Props {
+    coin: WalletCoinItem;
+    index: number;
+}
 
 const ItemContainer = styled.div`
     display: flex;
@@ -76,13 +76,13 @@ const Value = styled.div`
     font-size: 2vh;
 `;
 
-const WalletScrollBoxItem: React.FC<{ coin: WalletCoinItem }> = ({ coin }) => {
+const WalletScrollBoxItem: React.FC<Props> = ({ coin, index }) => {
     const displayHoldings = formatCompact(coin.holdings);
     const displayValue    = formatCompact(coin.value);
 
     return (
         <ItemContainer>
-            <Rank bg={coin.color}>{coin.rank}</Rank>
+            <Rank bg={coin.color}>{index}</Rank>
             <CoinInfo>
                 <Logo src={coin.logo} alt={coin.name} />
                 <Name>{coin.name}</Name>
