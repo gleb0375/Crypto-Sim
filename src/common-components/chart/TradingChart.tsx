@@ -1,22 +1,10 @@
 import React, { useEffect } from "react";
 import { init, dispose, KLineData } from "klinecharts";
-import { TradingChartProps } from "../../types/market.types";
+import {ExtendedTradingChartProps} from "../../types/market.types";
 import { getKlines } from "../../services/binanceApi";
+import {convertKline} from "../../utils/convertKline.ts";
 
-interface Props extends TradingChartProps {
-    onPriceUpdate?: (price: number) => void;
-}
-
-const convertKline = (item: TradingChartProps["data"][number]): KLineData => ({
-    timestamp: item.openTime,
-    open: parseFloat(item.open),
-    high: parseFloat(item.high),
-    low: parseFloat(item.low),
-    close: parseFloat(item.close),
-    volume: parseFloat(item.volume),
-});
-
-const TradingChart: React.FC<Props> = ({ data, symbol, interval, onPriceUpdate }) => {
+const TradingChart: React.FC<ExtendedTradingChartProps> = ({ data, symbol, interval, onPriceUpdate }) => {
     useEffect(() => {
         const chart = init("k-line-chart");
         if (!chart) return;

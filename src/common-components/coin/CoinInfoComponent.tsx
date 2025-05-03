@@ -4,10 +4,9 @@ import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import CoinDropdownList from "./CoinDropdownList";
 import { Coin, CoinHeaderProps } from "../../types/coin.types.ts";
 
-const HeaderContainer = styled.div`
+const CoinInfoContainer = styled.div`
     height: 4vh;
     display: flex;
-   // background-color: #16161b;
     color: #ffffff;
     position: relative;
     align-items: center;
@@ -71,7 +70,7 @@ const DropdownIcon = styled.div`
     }
 `;
 
-const CoinInfoContainer: React.FC<CoinHeaderProps> = ({
+const CoinInfoComponent: React.FC<CoinHeaderProps> = ({
                                                           coins,
                                                           selectedCoin,
                                                           price,
@@ -111,7 +110,7 @@ const CoinInfoContainer: React.FC<CoinHeaderProps> = ({
             : "...";
 
     return (
-        <HeaderContainer>
+        <CoinInfoContainer>
             <Section>
                 <DropdownButton onClick={toggleDropdown}>
                     <DropdownIcon>
@@ -135,8 +134,8 @@ const CoinInfoContainer: React.FC<CoinHeaderProps> = ({
                     onSelectCoin={handleSelectCoin}
                 />
             )}
-        </HeaderContainer>
+        </CoinInfoContainer>
     );
 };
 
-export default CoinInfoContainer;
+export default CoinInfoComponent;

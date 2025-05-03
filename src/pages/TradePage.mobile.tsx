@@ -2,15 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
 import TradePanel from "../common-components/trade/TradePanel";
-
-interface Props {
-    isOpen: boolean;
-    onClose: () => void;
-    onOpen: () => void;
-    symbol: string;
-    name: string;
-    price?: number;
-}
+import {MobileTradePanelProps} from "../types/trade.types.ts";
 
 const MobileTradeButton = styled.button`
     display: none;
@@ -69,7 +61,7 @@ const CloseButton = styled.button`
     z-index: 10;
 `;
 
-const MobileTradePanel: React.FC<Props> = ({ isOpen, onClose, onOpen, symbol, name, price }) => (
+const MobileTradePanel: React.FC<MobileTradePanelProps> = ({ isOpen, onClose, onOpen, symbol, name, price }) => (
     <>
         <MobileTradeButton onClick={onOpen}>Open Trade Panel</MobileTradeButton>
 

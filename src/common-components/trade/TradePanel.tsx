@@ -1,8 +1,8 @@
-// src/common-components/trade/TradePanel.tsx
 import React, {useState, useMemo, useRef, useEffect} from "react";
 import styled from "styled-components";
 import ModeSwitch from "./ui/ModeSwitch";
 import {useWallet} from "../../contexts/WalletContext.tsx";
+import {TradePanelProps} from "../../types/trade.types.ts";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -120,14 +120,7 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
     }
 `;
 
-
-interface Props {
-    symbol: string;
-    name: string;
-    price?: number;
-}
-
-const TradePanel: React.FC<Props> = ({ symbol, name, price }) => {
+const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
     const [mode, setMode] = useState<"buy" | "sell">("buy");
     const [qty, setQty] = useState("");
     const [orderValue, setOrderValue] = useState("");

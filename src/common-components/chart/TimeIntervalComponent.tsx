@@ -1,13 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import {TimeIntervalContainerProps} from "../../types/market.types.ts";
 
-interface TimeIntervalContainerProps {
-    intervals: string[];
-    selectedInterval: string;
-    onSelect: (interval: string) => void;
-}
-
-const Container = styled.div`
+const TimeIntervalContainer = styled.div`
     display: flex;
     gap: 1rem;
     margin-bottom: 2vh;
@@ -49,13 +44,13 @@ const TimeButton = styled.button<{ selected: boolean }>`
 `;
 
 
-const TimeIntervalContainer: React.FC<TimeIntervalContainerProps> = ({
+const TimeIntervalComponent: React.FC<TimeIntervalContainerProps> = ({
                                                                          intervals,
                                                                          selectedInterval,
                                                                          onSelect
                                                                      }) => {
     return (
-        <Container>
+        <TimeIntervalContainer>
             {intervals.map((interval) => (
                 <TimeButton
                     key={interval}
@@ -65,8 +60,8 @@ const TimeIntervalContainer: React.FC<TimeIntervalContainerProps> = ({
                     {interval}
                 </TimeButton>
             ))}
-        </Container>
+        </TimeIntervalContainer>
     );
 };
 
-export default TimeIntervalContainer;
+export default TimeIntervalComponent;

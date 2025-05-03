@@ -32,3 +32,16 @@ export interface TradingChartProps {
     symbol: string;
     interval: string;
 }
+
+export interface ExtendedTradingChartProps extends TradingChartProps {
+    onPriceUpdate?: (price: number) => void;
+}
+
+export interface TimeIntervalContainerProps {
+    intervals: string[];
+    selectedInterval: string;
+    onSelect: (interval: string) => void;
+}
+
+
+

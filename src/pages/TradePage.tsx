@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useKlines } from "../hooks/useKlines";
-import { useTickerPrice } from "../hooks/useTickerPrice";
 import TradingChart from "../common-components/chart/TradingChart";
-import CoinInfoContainer from "../common-components/coin/CoinInfoContainer";
-import TimeIntervalContainer from "../common-components/chart/TimeIntervalContainer";
+import CoinInfoComponent from "../common-components/coin/CoinInfoComponent.tsx";
+import TimeIntervalComponent from "../common-components/chart/TimeIntervalComponent.tsx";
 import Loader from "../common-components/loader/Loader";
 import TradePanel from "../common-components/trade/TradePanel";
 import MobileTradePanel from "./TradePage.mobile";
-import { Coin } from "../types/coin.types";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
+import {useTradePage} from "../hooks/trade/useTradePage.ts";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -74,21 +72,21 @@ const RightPanel = styled.div`
 `;
 
 const TradePage: React.FC = () => {
-    const [selectedCoin, setSelectedCoin] = useState<Coin>(COINS[0]);
-    const [selectedInterval, setSelectedInterval] = useState("1m");
-    const [livePrice, setLivePrice] = useState<number>();
-    const [isMobileTradeOpen, setIsMobileTradeOpen] = useState(false);
+    const {
+        selectedCoin,
+        setSelectedCoin,
+        selectedInterval,
+        setSelectedInterval,
+        displayPrice,
+        chartData,
+        error,
+        isLoading,
+        isMobileTradeOpen,
+        openMobileTrade,
+        closeMobileTrade,
+        setLivePrice,
+    } = useTradePage();
 
-    const { data, error, isLoading } = useKlines(selectedCoin.symbol, selectedInterval);
-    const { data: tickerData } = useTickerPrice(selectedCoin.symbol);
-
-    useEffect(() => {
-        if (tickerData && livePrice === undefined) {
-            setLivePrice(parseFloat(tickerData.price));
-        }
-    }, [tickerData, livePrice]);
-
-    const displayPrice = livePrice;
 
     if (isLoading) return <Loader />;
     if (error) return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
@@ -97,7 +95,7 @@ const TradePage: React.FC = () => {
         <>
             <ContainerCoinDetail>
                 <LeftPanel>
-                    <CoinInfoContainer
+                    <CoinInfoComponent
                         coins={COINS}
                         selectedCoin={selectedCoin}
                         price={displayPrice}
@@ -107,16 +105,16 @@ const TradePage: React.FC = () => {
                         }}
                     />
 
-                    <TimeIntervalContainer
+                    <TimeIntervalComponent
                         intervals={TIME_INTERVALS}
                         selectedInterval={selectedInterval}
                         onSelect={setSelectedInterval}
                     />
 
                     <ChartContainer>
-                        {data ? (
+                        {chartData ? (
                             <TradingChart
-                                data={data}
+                                data={chartData}
                                 symbol={selectedCoin.symbol}
                                 interval={selectedInterval}
                                 onPriceUpdate={setLivePrice}
@@ -134,8 +132,8 @@ const TradePage: React.FC = () => {
 
             <MobileTradePanel
                 isOpen={isMobileTradeOpen}
-                onOpen={() => setIsMobileTradeOpen(true)}
-                onClose={() => setIsMobileTradeOpen(false)}
+                onOpen={openMobileTrade}
+                onClose={closeMobileTrade}
                 symbol={selectedCoin.symbol}
                 name={selectedCoin.name}
                 price={displayPrice}
