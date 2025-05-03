@@ -58,15 +58,16 @@ const IconWrapper = styled.div`
     justify-content: center;
 
     svg {
-        font-size: 1.4rem;
+        font-size: 2.5vh;
         color: #bbb;
         transition: color 0.2s;
     }
 `;
 
 const HideZeroLabel = styled.span`
+    margin-top: 0.5vh;
     color: #bbb;
-    font-size: 1.5vh;
+    font-size: 2vh;
     user-select: none;
     pointer-events: none;
 `;

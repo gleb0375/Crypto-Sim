@@ -71,6 +71,7 @@ const ItemsContainer = styled.div`
     overflow-y:auto;
     position:relative;
     mask-image:linear-gradient(to bottom, black 90%, transparent);
+    @ts-ignore
     -webkit-mask-image:linear-gradient(to bottom, black 90%, transparent);
 
     &::-webkit-scrollbar{width:6px;}

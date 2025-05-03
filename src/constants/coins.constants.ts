@@ -15,7 +15,7 @@ export const COINS: Coin[] = [
     { symbol: "XRPUSDT", name: "XRP", logo: "/assets/logos/xrp-xrp-logo.svg", color: "#23292f" },
     { symbol: "DOGEUSDT", name: "DOGE", logo: "/assets/logos/dogecoin-doge-logo.svg", color: "#c2a633" },
     { symbol: "ADAUSDT", name: "ADA", logo: "/assets/logos/cardano-ada-logo.svg", color: "#0033ad" },
-    { symbol: "SOLUSDT", name: "SOL", logo: "/assets/logos/solana-sol-logo.svg", color: "#00ffa3" },
+    { symbol: "SOLUSDT", name: "SOL", logo: "/assets/logos/solana-sol-logo.svg", color: "#b900eb" },
     { symbol: "BNBUSDT", name: "BNB", logo: "/assets/logos/bnb-bnb-logo.svg", color: "#f3ba2f" },
     { symbol: "DOTUSDT", name: "DOT", logo: "/assets/logos/polkadot-new-dot-logo.svg", color: "#e6007a" },
     { symbol: "LTCUSDT", name: "LTC", logo: "/assets/logos/litecoin-ltc-logo.svg", color: "#345d9d" },

@@ -2,10 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
 import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
+import PieWalletChart from "../common-components/wallet/PieWalletChart";
 import { LEFT_COLUMN_WIDTH } from "../constants/wallet.constants.ts";
 import { calculateWalletBalance } from "../utils/calculateWalletBalance.ts";
 import { useWallet } from "../contexts/WalletContext.tsx";
 import { useTickerPrice } from "../hooks/useTickerPrice.ts";
+import { COINS, USDT_COIN } from "../constants/coins.constants.ts";
 
 const ContainerWallet = styled.div`
     display: flex;
@@ -25,6 +27,14 @@ const LeftColumn = styled.div`
     width: ${LEFT_COLUMN_WIDTH};
     height: 100%;
     gap: 2rem;
+`;
+
+const RightColumn = styled.div`
+    flex: 1;
+    padding-left: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const HIDE_ZERO_KEY = "wallet-hide-zero";
@@ -52,6 +62,33 @@ const WalletPage: React.FC = () => {
         [wallet, btcPrice]
     );
 
+    const pieData = useMemo(() => {
+        const total = filteredWallet.reduce((sum, c) => sum + c.value, 0);
+
+        return filteredWallet
+            .filter((coin) => coin.value > 0)
+            .map((coin) => {
+                const isUSDT = coin.symbol === "USDT";
+                const baseSymbol = isUSDT ? "USDT" : coin.symbol.replace("USDT", "");
+                const color = isUSDT
+                    ? USDT_COIN.color
+                    : COINS.find((c) => c.symbol === coin.symbol)?.color || "#888";
+
+                // округляем до десятков долларов
+                const rawValue = Math.round(coin.value / 10) * 10;
+
+                // игнорируем доли менее 0.1% от общего портфеля
+                const finalValue = rawValue < total * 0.001 ? 0 : rawValue;
+
+                return {
+                    name: baseSymbol,
+                    value: finalValue,
+                    color,
+                };
+            })
+            .filter((entry) => entry.value > 0); // очищаем нули
+    }, [filteredWallet]);
+
     return (
         <ContainerWallet>
             <LeftColumn>
@@ -62,6 +99,9 @@ const WalletPage: React.FC = () => {
                 />
                 <WalletScrollBox coins={filteredWallet} />
             </LeftColumn>
+            <RightColumn>
+                <PieWalletChart data={pieData} />
+            </RightColumn>
         </ContainerWallet>
     );
 };
