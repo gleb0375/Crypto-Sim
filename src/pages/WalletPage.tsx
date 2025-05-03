@@ -1,13 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
 import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
 import PieWalletChart from "../common-components/wallet/PieWalletChart";
 import { LEFT_COLUMN_WIDTH } from "../constants/wallet.constants.ts";
-import { calculateWalletBalance } from "../utils/calculateWalletBalance.ts";
-import { useWallet } from "../contexts/WalletContext.tsx";
-import { useTickerPrice } from "../hooks/useTickerPrice.ts";
-import { COINS, USDT_COIN } from "../constants/coins.constants.ts";
+import {useWalletPage} from "../hooks/wallet/useWalletPage.ts";
 
 const ContainerWallet = styled.div`
     display: flex;
@@ -24,7 +21,7 @@ const ContainerWallet = styled.div`
     }
 `;
 
-const LeftColumn = styled.div`
+const LeftPanel = styled.div`
     display: flex;
     flex-direction: column;
     max-width: 50vh;
@@ -39,7 +36,7 @@ const LeftColumn = styled.div`
     }
 `;
 
-const RightColumn = styled.div`
+const RightPanel = styled.div`
     flex: 1;
     padding-left: 2rem;
     display: flex;
@@ -51,70 +48,22 @@ const RightColumn = styled.div`
     }
 `;
 
-const HIDE_ZERO_KEY = "wallet-hide-zero";
-
 const WalletPage: React.FC = () => {
-    const { wallet } = useWallet();
-    const { data: btcTicker } = useTickerPrice("BTCUSDT");
-    const btcPrice = parseFloat(btcTicker?.price || "0");
-
-    const [hideZero, setHideZero] = useState<boolean>(() => {
-        const saved = localStorage.getItem(HIDE_ZERO_KEY);
-        return saved === "true";
-    });
-
-    useEffect(() => {
-        localStorage.setItem(HIDE_ZERO_KEY, hideZero.toString());
-    }, [hideZero]);
-
-    const filteredWallet = hideZero
-        ? wallet.filter((coin) => coin.holdings > 0)
-        : wallet;
-
-    const balance = useMemo(
-        () => calculateWalletBalance(wallet, btcPrice),
-        [wallet, btcPrice]
-    );
-
-    const pieData = useMemo(() => {
-        const total = filteredWallet.reduce((sum, c) => sum + c.value, 0);
-
-        return filteredWallet
-            .filter((coin) => coin.value > 0)
-            .map((coin) => {
-                const isUSDT = coin.symbol === "USDT";
-                const baseSymbol = isUSDT ? "USDT" : coin.symbol.replace("USDT", "");
-                const color = isUSDT
-                    ? USDT_COIN.color
-                    : COINS.find((c) => c.symbol === coin.symbol)?.color || "#888";
-
-                const rawValue = Math.round(coin.value / 10) * 10;
-
-                // игнорируем доли менее 0.1% от общего портфеля
-                const finalValue = rawValue < total * 0.001 ? 0 : rawValue;
-
-                return {
-                    name: baseSymbol,
-                    value: finalValue,
-                    color,
-                };
-            })
-            .filter((entry) => entry.value > 0); // очищаем нули
-    }, [filteredWallet]);
+    const { balance, filteredWallet, pieData, hideZero, toggleHideZero } = useWalletPage();
 
     return (
         <ContainerWallet>
-            <LeftColumn>
+            <LeftPanel>
                 <WalletAccountHeader
                     balance={balance}
                     hideZero={hideZero}
-                    onToggleHideZero={() => setHideZero((prev) => !prev)}
+                    onToggleHideZero={toggleHideZero}
                 />
                 <WalletScrollBox coins={filteredWallet} />
-            </LeftColumn>
-            <RightColumn>
+            </LeftPanel>
+            <RightPanel>
                 <PieWalletChart data={pieData} />
-            </RightColumn>
+            </RightPanel>
         </ContainerWallet>
     );
 };
