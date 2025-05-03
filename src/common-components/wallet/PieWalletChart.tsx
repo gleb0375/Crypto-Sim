@@ -6,6 +6,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from "recharts";
+//@ts-ignore
 import { PieLabelRenderProps } from "recharts/types/component/Pie";
 
 interface PieDataItem {

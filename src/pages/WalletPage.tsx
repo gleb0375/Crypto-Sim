@@ -18,6 +18,10 @@ const ContainerWallet = styled.div`
     background-color: #16161b;
     padding: 2vh;
     box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
 `;
 
 const LeftColumn = styled.div`
@@ -27,6 +31,12 @@ const LeftColumn = styled.div`
     width: ${LEFT_COLUMN_WIDTH};
     height: 100%;
     gap: 2rem;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+    }
 `;
 
 const RightColumn = styled.div`
@@ -35,6 +45,10 @@ const RightColumn = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 const HIDE_ZERO_KEY = "wallet-hide-zero";
@@ -74,7 +88,6 @@ const WalletPage: React.FC = () => {
                     ? USDT_COIN.color
                     : COINS.find((c) => c.symbol === coin.symbol)?.color || "#888";
 
-                // округляем до десятков долларов
                 const rawValue = Math.round(coin.value / 10) * 10;
 
                 // игнорируем доли менее 0.1% от общего портфеля

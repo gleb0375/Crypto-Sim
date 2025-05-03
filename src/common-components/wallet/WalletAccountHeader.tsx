@@ -13,7 +13,7 @@ interface Props {
 
 const HeaderBox = styled.div`
     background-color: #1e1e24;
-    padding: 2rem;
+    padding: 2vh;
     border-radius: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     width: ${LEFT_COLUMN_WIDTH};
