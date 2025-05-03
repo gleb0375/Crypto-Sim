@@ -6,11 +6,11 @@ import TradingChart from "../common-components/chart/TradingChart";
 import CoinInfoContainer from "../common-components/coin/CoinInfoContainer";
 import TimeIntervalContainer from "../common-components/chart/TimeIntervalContainer";
 import Loader from "../common-components/loader/Loader";
-import TradePanel from "../common-components/trade/TradePanel.tsx";
+import TradePanel from "../common-components/trade/TradePanel";
+import MobileTradePanel from "./TradePage.mobile";
 import { Coin } from "../types/coin.types";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
-import {IoMdClose} from "react-icons/io";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -73,64 +73,6 @@ const RightPanel = styled.div`
     }
 `;
 
-const MobileTradeButton = styled.button`
-    display: none;
-
-    @media (max-width: 768px) {
-        display: block;
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
-        padding: 1rem;
-        background-color: #28a745;
-        color: white;
-        font-size: 3.5vh;
-        border: none;
-        border-radius: 0.8rem;
-        z-index: 1000;
-    }
-`;
-
-const MobileTradeModal = styled.div`
-    display: none;
-
-    @media (max-width: 768px) {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: #1e1e24;
-        z-index: 2000;
-        overflow-y: auto;
-    }
-`;
-
-const MobileTradeWrapper = styled.div`
-    margin-top: 5rem;
-    padding: 1rem;
-    width: 100%;
-    max-width: 420px;
-    box-sizing: border-box;
-`;
-
-const CloseButton = styled.button`
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 2rem;
-    cursor: pointer;
-    z-index: 10;
-`;
-
-
 const TradePage: React.FC = () => {
     const [selectedCoin, setSelectedCoin] = useState<Coin>(COINS[0]);
     const [selectedInterval, setSelectedInterval] = useState("1m");
@@ -190,20 +132,14 @@ const TradePage: React.FC = () => {
                 </RightPanel>
             </ContainerCoinDetail>
 
-            <MobileTradeButton onClick={() => setIsMobileTradeOpen(true)}>
-                Open Trade Panel
-            </MobileTradeButton>
-
-            {isMobileTradeOpen && (
-                <MobileTradeModal>
-                    <CloseButton onClick={() => setIsMobileTradeOpen(false)}>
-                        <IoMdClose />
-                    </CloseButton>
-                    <MobileTradeWrapper>
-                        <TradePanel symbol={selectedCoin.symbol} name={selectedCoin.name} price={displayPrice} />
-                    </MobileTradeWrapper>
-                </MobileTradeModal>
-            )}
+            <MobileTradePanel
+                isOpen={isMobileTradeOpen}
+                onOpen={() => setIsMobileTradeOpen(true)}
+                onClose={() => setIsMobileTradeOpen(false)}
+                symbol={selectedCoin.symbol}
+                name={selectedCoin.name}
+                price={displayPrice}
+            />
         </>
     );
 };
