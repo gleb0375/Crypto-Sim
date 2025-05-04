@@ -75,6 +75,18 @@ export const useTradePanel = (symbol: string, price?: number) => {
         lastChanged.current = null;
     };
 
+    const hasInsufficientBalance = useMemo(() => {
+        if (!price) return false;
+        const amount = parseFloat(qty);
+        if (isNaN(amount) || amount <= 0) return false;
+
+        if (mode === "buy") {
+            return amount * price > getBalance("USDT");
+        } else {
+            return amount > getBalance(symbol);
+        }
+    }, [mode, qty, price, getBalance, symbol]);
+
     return {
         mode,
         setMode,
@@ -87,5 +99,6 @@ export const useTradePanel = (symbol: string, price?: number) => {
         handleQtyChange,
         handleOrderValueChange,
         handleExecuteTrade,
+        hasInsufficientBalance,
     };
 };

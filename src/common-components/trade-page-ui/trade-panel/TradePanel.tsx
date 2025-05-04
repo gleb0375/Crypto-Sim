@@ -33,11 +33,6 @@ const Row = styled.div`
     gap: 0.5rem;
 `;
 
-const BalanceValue = styled.div`
-    color: #fff;
-    font-size: 0.9rem;
-`;
-
 const UnitWrapper = styled.div`
     position: relative;
     width: 100%;
@@ -120,6 +115,19 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
     }
 `;
 
+const ErrorInputWrapper = styled(UnitWrapper)<{ hasError?: boolean }>`
+    ${props => props.hasError && `
+        input {
+            border: 1px solid #ff4d4f;
+        }
+    `}
+`;
+
+const BalanceValue = styled.div<{ hasError?: boolean }>`
+    color: ${props => props.hasError ? "#ff4d4f" : "#fff"};
+    font-size: 0.9rem;
+`;
+
 const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
     const {
         mode,
@@ -130,6 +138,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
         handleQtyChange,
         handleOrderValueChange,
         handleExecuteTrade,
+        hasInsufficientBalance,
     } = useTradePanel(symbol, price);
 
     return (
@@ -138,7 +147,10 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
             <Section>
                 <Row>
                     <Label>Available Balance</Label>
-                    <BalanceValue>{availableBalanceDisplay} {mode === "buy" ? "USDT" : name}</BalanceValue>
+                    <BalanceValue hasError={hasInsufficientBalance}>
+                        {availableBalanceDisplay} {mode === "buy" ? "USDT" : name}
+                    </BalanceValue>
+
                 </Row>
                 <div>
                     <Label>Order Price</Label>
@@ -159,8 +171,8 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                     </UnitWrapper>
                 </div>
                 <div>
-                    <Label>Order Value</Label>
-                    <UnitWrapper>
+                <Label>Order Value</Label>
+                    <ErrorInputWrapper hasError={ mode === "buy" && hasInsufficientBalance}>
                         <EditableInput
                             type="number"
                             placeholder="0"
@@ -168,12 +180,12 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                             onChange={handleOrderValueChange}
                         />
                         <UnitInside>USDT</UnitInside>
-                    </UnitWrapper>
+                    </ErrorInputWrapper>
                 </div>
             </Section>
             <ActionButton
                 mode={mode}
-                disabled={!qty || !price}
+                disabled={!qty || !price || hasInsufficientBalance}
                 onClick={handleExecuteTrade}
             >
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
