@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {CoinDropdownListProps} from "../../types/coin.types.ts";
+import {CoinDropdownListProps} from "../../../types/coin.types.ts";
 
 const DropdownListContainer = styled.div`
     position: absolute;

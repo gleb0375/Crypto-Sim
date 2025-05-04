@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import WalletScrollBoxItem from './WalletScrollBoxItem';
-import { WalletCoinItem } from '../../types/coin.types';
-import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../constants/wallet.constants';
+import WalletScrollBoxItem from './WalletScrollBoxItem.tsx';
+import { WalletCoinItem } from '../../../types/coin.types.ts';
+import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../../constants/wallet.constants.ts';
 
 interface Props {
     coins: WalletCoinItem[];

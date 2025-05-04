@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { LEFT_COLUMN_WIDTH } from "../../constants/wallet.constants.ts";
-import { WalletBalance } from "../../types/coin.types.ts";
-import { formatBtcWithSpaces, formatUsdWithSpaces } from "../../utils/number.ts";
+import { LEFT_COLUMN_WIDTH } from "../../../constants/wallet.constants.ts";
+import { WalletBalance } from "../../../types/coin.types.ts";
+import { formatBtcWithSpaces, formatUsdWithSpaces } from "../../../utils/number.ts";
 import { IoIosCheckboxOutline, IoIosSquareOutline } from "react-icons/io";
 
 interface Props {

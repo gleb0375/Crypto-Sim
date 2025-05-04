@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
-import TradePanel from "../common-components/trade/TradePanel";
+import TradePanel from "../common-components/trade-page-ui/trade-panel/TradePanel.tsx";
 import {MobileTradePanelProps} from "../types/trade.types.ts";
 
 const MobileTradeButton = styled.button`

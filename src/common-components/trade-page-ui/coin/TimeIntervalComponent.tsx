@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {TimeIntervalContainerProps} from "../../types/market.types.ts";
+import {TimeIntervalContainerProps} from "../../../types/market.types.ts";
 
 const TimeIntervalContainer = styled.div`
     display: flex;

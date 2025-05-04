@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import TradingChart from "../common-components/chart/TradingChart";
-import CoinInfoComponent from "../common-components/coin/CoinInfoComponent.tsx";
-import TimeIntervalComponent from "../common-components/chart/TimeIntervalComponent.tsx";
+import TradingChart from "../common-components/trade-page-ui/chart/TradingChart";
+import CoinInfoComponent from "../common-components/trade-page-ui/coin/CoinInfoComponent.tsx";
+import TimeIntervalComponent from "../common-components/trade-page-ui/coin/TimeIntervalComponent.tsx";
 import Loader from "../common-components/loader/Loader";
-import TradePanel from "../common-components/trade/TradePanel";
+import TradePanel from "../common-components/trade-page-ui/trade-panel/TradePanel.tsx";
 import MobileTradePanel from "./TradePage.mobile";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
-import {useTradePage} from "../hooks/trade/useTradePage.ts";
+import {useTradePage} from "../hooks/trade-page/useTradePage.ts";
 
 const ContainerCoinDetail = styled.div`
     display: flex;

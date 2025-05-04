@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { init, dispose, KLineData } from "klinecharts";
-import {ExtendedTradingChartProps} from "../../types/market.types";
-import { getKlines } from "../../services/binanceApi";
-import {convertKline} from "../../utils/convertKline.ts";
+import {ExtendedTradingChartProps} from "../../../types/market.types.ts";
+import { getKlines } from "../../../services/binanceApi.ts";
+import {convertKline} from "../../../utils/convertKline.ts";
 
 const TradingChart: React.FC<ExtendedTradingChartProps> = ({ data, symbol, interval, onPriceUpdate }) => {
     useEffect(() => {

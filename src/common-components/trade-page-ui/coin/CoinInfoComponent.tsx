@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
-import CoinDropdownList from "./CoinDropdownList";
-import { Coin, CoinHeaderProps } from "../../types/coin.types.ts";
+import CoinDropdownList from "./CoinDropdownList.tsx";
+import { CoinHeaderProps } from "../../../types/coin.types.ts";
+import {useCoinInfo} from "../../../hooks/coin/useCoinInfo.ts";
 
 const CoinInfoContainer = styled.div`
     height: 4vh;
@@ -74,40 +75,15 @@ const CoinInfoComponent: React.FC<CoinHeaderProps> = ({
                                                           coins,
                                                           selectedCoin,
                                                           price,
-                                                          onSelectCoin
+                                                          onSelectCoin,
                                                       }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [previousPrice, setPreviousPrice] = useState<number | null>(null);
-    const [priceChange, setPriceChange] = useState<"up" | "down" | "neutral">("neutral");
-
-    useEffect(() => {
-        if (price !== undefined && previousPrice !== null) {
-            if (price > previousPrice) {
-                setPriceChange("up");
-            } else if (price < previousPrice) {
-                setPriceChange("down");
-            } else {
-                setPriceChange("neutral");
-            }
-        }
-        if (price !== undefined) {
-            setPreviousPrice(price);
-        }
-    }, [price]);
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleSelectCoin = (coin: Coin) => {
-        onSelectCoin(coin);
-        setIsOpen(false);
-    };
-
-    const displayPrice =
-        price !== undefined
-            ? price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-            : "...";
+    const {
+        isOpen,
+        toggleDropdown,
+        handleSelectCoin,
+        priceChange,
+        formattedPrice
+    } = useCoinInfo(price, onSelectCoin);
 
     return (
         <CoinInfoContainer>
@@ -125,7 +101,7 @@ const CoinInfoComponent: React.FC<CoinHeaderProps> = ({
             </Section>
 
             <Section>
-                <CoinPrice change={priceChange}>{displayPrice}</CoinPrice>
+                <CoinPrice change={priceChange}>{formattedPrice}</CoinPrice>
             </Section>
 
             {isOpen && (

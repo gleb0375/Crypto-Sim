@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import WalletAccountHeader from "../common-components/wallet/WalletAccountHeader";
-import WalletScrollBox from "../common-components/wallet/WalletScrollBox";
-import PieWalletChart from "../common-components/wallet/PieWalletChart";
+import WalletAccountHeader from "../common-components/wallet-page-ui/header/WalletAccountHeader.tsx";
+import WalletScrollBox from "../common-components/wallet-page-ui/scroll-box/WalletScrollBox.tsx";
+import PieWalletChart from "../common-components/wallet-page-ui/pie-chart/PieWalletChart.tsx";
 import { LEFT_COLUMN_WIDTH } from "../constants/wallet.constants.ts";
-import {useWalletPage} from "../hooks/wallet/useWalletPage.ts";
+import {useWalletPage} from "../hooks/wallet-page/useWalletPage.ts";
 
 const ContainerWallet = styled.div`
     display: flex;

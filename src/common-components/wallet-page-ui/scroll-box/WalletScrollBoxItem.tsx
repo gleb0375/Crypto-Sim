@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { WalletCoinItem } from "../../types/coin.types.ts";
-import {formatCompact} from "../../utils/number.ts";
+import { WalletCoinItem } from "../../../types/coin.types.ts";
+import {formatCompact} from "../../../utils/number.ts";
 
 interface Props {
     coin: WalletCoinItem;

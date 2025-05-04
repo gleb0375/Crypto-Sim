@@ -1,8 +1,8 @@
-import React, {useState, useMemo, useRef, useEffect} from "react";
+import React from "react";
 import styled from "styled-components";
-import ModeSwitch from "./ui/ModeSwitch";
-import {useWallet} from "../../contexts/WalletContext.tsx";
-import {TradePanelProps} from "../../types/trade.types.ts";
+import ModeSwitch from "./ModeSwitch.tsx";
+import {TradePanelProps} from "../../../types/trade.types.ts";
+import {useTradePanel} from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -121,104 +121,32 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
 `;
 
 const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
-    const [mode, setMode] = useState<"buy" | "sell">("buy");
-    const [qty, setQty] = useState("");
-    const [orderValue, setOrderValue] = useState("");
-
-    const lastChanged = useRef<"qty" | "orderValue" | null>(null);
-
-    const { getBalance, executeTrade } = useWallet();
-
-    const availableBalance = useMemo(() => {
-        return mode === "buy" ? getBalance("USDT") : getBalance(symbol);
-    }, [mode, symbol, getBalance]);
-
-    const availableBalanceDisplay = availableBalance.toLocaleString("en-US", {
-        maximumFractionDigits: 2,
-    });
-
-    useEffect(() => {
-        if (!price) return;
-
-        if (lastChanged.current === "qty") {
-            const parsedQty = parseFloat(qty);
-            if (!isNaN(parsedQty)) {
-                setOrderValue((parsedQty * price).toFixed(2));
-            } else {
-                setOrderValue("");
-            }
-        }
-    }, [qty, price]);
-
-    useEffect(() => {
-        if (!price) return;
-
-        if (lastChanged.current === "orderValue") {
-            const parsedValue = parseFloat(orderValue);
-            if (!isNaN(parsedValue) && price > 0) {
-                setQty((parsedValue / price).toFixed(6));
-            } else {
-                setQty("");
-            }
-        }
-    }, [orderValue, price]);
-
-    const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        lastChanged.current = "qty";
-        setQty(e.target.value);
-    };
-
-    const handleOrderValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        lastChanged.current = "orderValue";
-        setOrderValue(e.target.value);
-    };
-
-    const handleExecuteTrade = () => {
-        if (!price) return;
-
-        const amount = parseFloat(qty);
-        if (isNaN(amount) || amount <= 0) return;
-
-        if (mode === "buy" && amount * price > getBalance("USDT")) {
-            alert("Insufficient USDT balance");
-            return;
-        }
-
-        if (mode === "sell" && amount > getBalance(symbol)) {
-            alert(`Insufficient ${symbol} balance`);
-            return;
-        }
-
-        executeTrade(mode, symbol, price, amount);
-        setQty("");
-        setOrderValue("");
-        lastChanged.current = null;
-    };
+    const {
+        mode,
+        setMode,
+        qty,
+        orderValue,
+        availableBalanceDisplay,
+        handleQtyChange,
+        handleOrderValueChange,
+        handleExecuteTrade,
+    } = useTradePanel(symbol, price);
 
     return (
         <PanelContainer>
             <ModeSwitch mode={mode} onChange={setMode} />
-
             <Section>
                 <Row>
                     <Label>Available Balance</Label>
-                    <BalanceValue>
-                        {availableBalanceDisplay} {mode === "buy" ? "USDT" : name}
-                    </BalanceValue>
+                    <BalanceValue>{availableBalanceDisplay} {mode === "buy" ? "USDT" : name}</BalanceValue>
                 </Row>
-
                 <div>
                     <Label>Order Price</Label>
                     <UnitWrapper>
-                        <UnitInput
-                            type="text"
-                            readOnly
-                            value={price?.toFixed(2) ?? "--"}
-                        />
+                        <UnitInput type="text" readOnly value={price?.toFixed(2) ?? "--"} />
                         <UnitInside>USDT</UnitInside>
                     </UnitWrapper>
                 </div>
-
                 <div>
                     <Label>Qty</Label>
                     <UnitWrapper>
@@ -230,7 +158,6 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                         />
                     </UnitWrapper>
                 </div>
-
                 <div>
                     <Label>Order Value</Label>
                     <UnitWrapper>
@@ -244,7 +171,6 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                     </UnitWrapper>
                 </div>
             </Section>
-
             <ActionButton
                 mode={mode}
                 disabled={!qty || !price}
