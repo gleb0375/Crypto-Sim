@@ -27,3 +27,12 @@ export interface WalletBalance {
     totalValueUSD: number;
     totalHoldingsBTC: number;
 }
+
+export interface WalletScrollBoxProps {
+    coins: WalletCoinItem[];
+}
+
+export interface WalletScrollBoxItemProps {
+    coin: WalletCoinItem;
+    index: number;
+}

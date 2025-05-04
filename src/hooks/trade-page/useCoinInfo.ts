@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Coin } from "../../types/coin.types";
+import { Coin } from "../../types/coin.types.ts";
 
 export const useCoinInfo = (price?: number, onSelectCoin?: (coin: Coin) => void) => {
     const [isOpen, setIsOpen] = useState(false);

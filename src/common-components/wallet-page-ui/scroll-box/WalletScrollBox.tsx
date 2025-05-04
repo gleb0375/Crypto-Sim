@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import WalletScrollBoxItem from './WalletScrollBoxItem.tsx';
-import { WalletCoinItem } from '../../../types/coin.types.ts';
+import { WalletScrollBoxProps } from '../../../types/coin.types.ts';
+import CoinDetailModal from './CoinDetailModal.tsx';
 import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../../constants/wallet.constants.ts';
 
-interface Props {
-    coins: WalletCoinItem[];
-}
 
 const ScrollBoxContainer = styled.div`
     background:#1e1e24;
@@ -25,7 +23,6 @@ const ScrollBoxContainer = styled.div`
     min-height:0;
 `;
 
-
 const HeaderRow = styled.div`
     display: grid;
     grid-template-columns: ${COL_TEMPLATE};
@@ -41,11 +38,11 @@ const HeaderRow = styled.div`
     position: sticky;
     top: 0;
     z-index: 1;
-    
+
     span:nth-child(1) {
         padding-left: 0.2rem;
     }
-    
+
     span:nth-child(2) {
         justify-content: flex-start;
     }
@@ -65,7 +62,6 @@ const HeaderRow = styled.div`
     }
 `;
 
-
 const ItemsContainer = styled.div`
     flex:1;
     overflow-y:auto;
@@ -80,21 +76,33 @@ const ItemsContainer = styled.div`
     &::-webkit-scrollbar-thumb:hover{background:#777;}
 `;
 
-const WalletScrollBox:React.FC<Props> = ({ coins }) => (
-    <ScrollBoxContainer>
-        <HeaderRow>
-            <span>#</span>
-            <span>Name</span>
-            <span>Holdings</span>
-            <span>Value</span>
-        </HeaderRow>
+const WalletScrollBox: React.FC<WalletScrollBoxProps> = ({ coins }) => {
+    const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
 
-        <ItemsContainer>
-            {coins.map((c,i)=>(
-                <WalletScrollBoxItem key={c.symbol} coin={c}  index={i + 1}/>
-            ))}
-        </ItemsContainer>
-    </ScrollBoxContainer>
-);
+    return (
+        <>
+            <ScrollBoxContainer>
+                <HeaderRow>
+                    <span>#</span>
+                    <span>Name</span>
+                    <span>Holdings</span>
+                    <span>Value</span>
+                </HeaderRow>
+
+                <ItemsContainer>
+                    {coins.map((c, i) => (
+                        <div key={c.symbol} onClick={() => setSelectedSymbol(c.symbol)}>
+                            <WalletScrollBoxItem coin={c} index={i + 1} />
+                        </div>
+                    ))}
+                </ItemsContainer>
+            </ScrollBoxContainer>
+
+            {selectedSymbol && (
+                <CoinDetailModal symbol={selectedSymbol} onClose={() => setSelectedSymbol(null)} />
+            )}
+        </>
+    );
+};
 
 export default WalletScrollBox;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
 import CoinDropdownList from "./CoinDropdownList.tsx";
 import { CoinHeaderProps } from "../../../types/coin.types.ts";
-import {useCoinInfo} from "../../../hooks/coin/useCoinInfo.ts";
+import {useCoinInfo} from "../../../hooks/trade-page/useCoinInfo.ts";
 
 const CoinInfoContainer = styled.div`
     height: 4vh;

@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { WalletCoinItem } from "../../../types/coin.types.ts";
+import { WalletScrollBoxItemProps } from "../../../types/coin.types.ts";
 import {formatCompact} from "../../../utils/number.ts";
 
-interface Props {
-    coin: WalletCoinItem;
-    index: number;
-}
 
 const ItemContainer = styled.div`
     display: flex;
@@ -16,25 +12,27 @@ const ItemContainer = styled.div`
     overflow: hidden;
     margin-bottom: 1rem;
     height: 5vh;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #b6dbff;
+    }
 `;
 
 const Rank = styled.div<{ bg: string }>`
     background-color: ${(props) => props.bg};
     color: white;
     font-weight: bold;
-
-    //width: 3rem;
     min-width: 2rem;
     max-width: 2.5rem;
     height: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-
     font-variant-numeric: tabular-nums;
-
     flex-shrink: 0;
 `;
 
@@ -76,7 +74,7 @@ const Value = styled.div`
     font-size: 2vh;
 `;
 
-const WalletScrollBoxItem: React.FC<Props> = ({ coin, index }) => {
+const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index }) => {
     const displayHoldings = formatCompact(coin.holdings);
     const displayValue    = formatCompact(coin.value);
 

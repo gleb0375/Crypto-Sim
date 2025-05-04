@@ -1,4 +1,4 @@
-import { useKlines } from "../useKlines.ts";
+import { useKlines } from "./useKlines.ts";
 import { useSelectedCoin } from "./useSelectedCoin.ts";
 import { useSelectedInterval } from "./useSelectedInterval.ts";
 import { useLivePrice } from "./useLivePrice.ts";
