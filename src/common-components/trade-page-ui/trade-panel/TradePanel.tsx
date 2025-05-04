@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ModeSwitch from "./ModeSwitch.tsx";
-import {TradePanelProps} from "../../../types/trade.types.ts";
-import {useTradePanel} from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
+import { TradePanelProps } from "../../../types/trade.types.ts";
+import { useTradePanel } from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
+import TradeSuccessModal from "./TradeSuccessModal";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -138,8 +139,21 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
         handleQtyChange,
         handleOrderValueChange,
         handleExecuteTrade,
+        resetForm,
         hasInsufficientBalance,
     } = useTradePanel(symbol, price);
+
+    const [lastTrade, setLastTrade] = useState<{ amount: number; value: number } | null>(null);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const handleTrade = () => {
+        const result = handleExecuteTrade();
+        if (result.success && result.amount && result.value) {
+            setLastTrade({ amount: result.amount, value: result.value });
+            setShowSuccessModal(true);
+            resetForm();
+        }
+    };
 
     return (
         <PanelContainer>
@@ -150,7 +164,6 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                     <BalanceValue hasError={hasInsufficientBalance}>
                         {availableBalanceDisplay} {mode === "buy" ? "USDT" : name}
                     </BalanceValue>
-
                 </Row>
                 <div>
                     <Label>Order Price</Label>
@@ -171,8 +184,8 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                     </UnitWrapper>
                 </div>
                 <div>
-                <Label>Order Value</Label>
-                    <ErrorInputWrapper hasError={ mode === "buy" && hasInsufficientBalance}>
+                    <Label>Order Value</Label>
+                    <ErrorInputWrapper hasError={mode === "buy" && hasInsufficientBalance}>
                         <EditableInput
                             type="number"
                             placeholder="0"
@@ -186,10 +199,20 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
             <ActionButton
                 mode={mode}
                 disabled={!qty || !price || hasInsufficientBalance}
-                onClick={handleExecuteTrade}
+                onClick={handleTrade}
             >
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
             </ActionButton>
+
+            {showSuccessModal && lastTrade && (
+                <TradeSuccessModal
+                    symbol={symbol}
+                    amount={lastTrade.amount}
+                    value={lastTrade.value}
+                    mode={mode}
+                    onClose={() => setShowSuccessModal(false)}
+                />
+            )}
         </PanelContainer>
     );
 };

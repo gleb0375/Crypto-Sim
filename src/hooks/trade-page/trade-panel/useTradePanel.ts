@@ -53,23 +53,30 @@ export const useTradePanel = (symbol: string, price?: number) => {
         setOrderValue(e.target.value);
     };
 
-    const handleExecuteTrade = () => {
-        if (!price) return;
+    const handleExecuteTrade = (): { success: boolean; amount?: number; value?: number } => {
+        if (!price) return { success: false };
 
         const amount = parseFloat(qty);
-        if (isNaN(amount) || amount <= 0) return;
+        if (isNaN(amount) || amount <= 0) return { success: false };
 
-        if (mode === "buy" && amount * price > getBalance("USDT")) {
+        const totalValue = amount * price;
+
+        if (mode === "buy" && totalValue > getBalance("USDT")) {
             alert("Insufficient USDT balance");
-            return;
+            return { success: false };
         }
 
         if (mode === "sell" && amount > getBalance(symbol)) {
             alert(`Insufficient ${symbol} balance`);
-            return;
+            return { success: false };
         }
 
         executeTrade(mode, symbol, price, amount);
+
+        return { success: true, amount, value: totalValue };
+    };
+
+    const resetForm = () => {
         setQty("");
         setOrderValue("");
         lastChanged.current = null;
@@ -80,25 +87,21 @@ export const useTradePanel = (symbol: string, price?: number) => {
         const amount = parseFloat(qty);
         if (isNaN(amount) || amount <= 0) return false;
 
-        if (mode === "buy") {
-            return amount * price > getBalance("USDT");
-        } else {
-            return amount > getBalance(symbol);
-        }
+        return mode === "buy"
+            ? amount * price > getBalance("USDT")
+            : amount > getBalance(symbol);
     }, [mode, qty, price, getBalance, symbol]);
 
     return {
         mode,
         setMode,
         qty,
-        setQty,
         orderValue,
-        setOrderValue,
-        lastChanged,
         availableBalanceDisplay,
         handleQtyChange,
         handleOrderValueChange,
         handleExecuteTrade,
+        resetForm,
         hasInsufficientBalance,
     };
 };
