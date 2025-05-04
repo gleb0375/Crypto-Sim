@@ -1,14 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
-
-interface TradeSuccessModalProps {
-    symbol: string;
-    amount: number;
-    value: number;
-    mode: "buy" | "sell";
-    onClose: () => void;
-}
+import {TradeSuccessModalProps} from "../../../types/trade.types.ts";
 
 const Overlay = styled.div`
     position: fixed;
