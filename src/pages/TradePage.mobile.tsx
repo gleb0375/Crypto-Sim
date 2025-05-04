@@ -8,13 +8,15 @@ const MobileTradeButton = styled.button`
     display: none;
 
     @media (max-width: 768px) {
+        font-family: 'telegraf', sans-serif;
+        font-weight: 400;
         display: block;
         position: fixed;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
+        bottom: 2vh;
+        left: 2vh;
+        right: 2vh;
         padding: 1rem;
-        background-color: #28a745;
+        background-color: #2e2e33;
         color: white;
         font-size: 3.5vh;
         border: none;

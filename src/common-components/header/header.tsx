@@ -14,11 +14,10 @@ const HeaderContainer = styled.header`
     top: 0;
     left: 0;
     height: 8vh;
-    z-index: 1000;
+    z-index: 1100;
 
     @media (max-width: 768px) {
         justify-content: space-between;
-        //padding: 0 1rem;
     }
 `;
 
