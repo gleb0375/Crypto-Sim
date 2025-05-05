@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTickerPrice } from '../services/binanceApi';
+import { getTickerPrice } from '../../services/binanceApi.ts';
 
 
 export const useTickerPrice = (symbol: string) => {

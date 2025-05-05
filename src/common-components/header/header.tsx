@@ -167,8 +167,8 @@ const Header: React.FC = () => {
                     About
                 </NavButton>
                 <NavButton
-                    onClick={() => navigate(ROUTES.COIN_DETAIL)}
-                    isActive={location.pathname === ROUTES.COIN_DETAIL}
+                    onClick={() => navigate(ROUTES.TRADE)}
+                    isActive={location.pathname === ROUTES.TRADE}
                 >
                     Trade
                 </NavButton>
@@ -194,10 +194,10 @@ const Header: React.FC = () => {
                 </NavButton>
                 <NavButton
                     onClick={() => {
-                        navigate(ROUTES.COIN_DETAIL);
+                        navigate(ROUTES.TRADE);
                         setSidebarOpen(false);
                     }}
-                    isActive={location.pathname === ROUTES.COIN_DETAIL}
+                    isActive={location.pathname === ROUTES.TRADE}
                 >
                     Trade
                 </NavButton>

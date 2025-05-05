@@ -1,7 +1,6 @@
 export const ROUTES = {
     HOME: '/about',
-    COIN_DETAIL: '/coin-detail',
+    TRADE: '/trading',
     WALLET: '/wallet',
-    TRADING: '/trading',
 };
 

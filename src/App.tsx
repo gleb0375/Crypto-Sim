@@ -22,9 +22,9 @@ const App: React.FC = () => {
             <Header />
             <ContentContainer>
                 <Routes>
-                    <Route path={ROUTES.COIN_DETAIL} element={<TradePage />} />
+                    <Route path={ROUTES.TRADE} element={<TradePage />} />
                     <Route path={ROUTES.WALLET} element={<WalletPage />} />
-                    {/*<Route path={ROUTES.TRADING} element={<TradingPage />} />*/}
+                    {/*<Route path={ROUTES.ABOUT} element={<TradingPage />} />*/}
                 </Routes>
             </ContentContainer>
         </Router>

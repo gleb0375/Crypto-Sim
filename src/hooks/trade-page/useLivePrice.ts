@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTickerPrice } from "../useTickerPrice.ts";
+import { useTickerPrice } from "./useTickerPrice.ts";
 
 export const useLivePrice = (symbol: string) => {
     const [livePrice, setLivePrice] = useState<number>();

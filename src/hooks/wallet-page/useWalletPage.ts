@@ -2,7 +2,7 @@ import { useFilteredWallet } from "./useFilteredWallet";
 import { useWalletBalance } from "./useWalletBalance";
 import { useWalletPieData } from "./useWalletPieData";
 import { useHideZeroPreference } from "./useHideZeroPreference";
-import {useTickerPrice} from "../useTickerPrice.ts";
+import {useTickerPrice} from "../trade-page/useTickerPrice.ts";
 import {useWallet} from "../../contexts/WalletContext.tsx";
 
 export const useWalletPage = () => {
