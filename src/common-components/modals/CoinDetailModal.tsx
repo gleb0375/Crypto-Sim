@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { useWallet } from '../../../contexts/WalletContext.tsx';
+import { useWallet } from '../../contexts/WalletContext.tsx';
 import { IoMdClose } from "react-icons/io";
 
 interface Props {

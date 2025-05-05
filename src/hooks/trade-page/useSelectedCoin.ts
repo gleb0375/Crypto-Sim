@@ -1,26 +1,36 @@
-import { useState, useEffect } from "react";
-import { Coin } from "../../types/coin.types.ts";
+import { useEffect, useState } from "react";
 import { COINS } from "../../constants/coins.constants.ts";
+import { Coin } from "../../types/coin.types.ts";
 
-const LOCAL_STORAGE_KEY = "selectedCoinSymbol";
+const STORAGE_KEY = "selectedCoinSymbol";
 
 export const useSelectedCoin = () => {
-    const [selectedCoin, setSelectedCoinState] = useState<Coin>(COINS[0]);
+    const getInitialCoin = (): Coin => {
+        const storedSymbol = localStorage.getItem(STORAGE_KEY);
+        const found = COINS.find((c) => c.symbol === storedSymbol);
+        return found || COINS[0];
+    };
+
+    const [selectedCoin, setSelectedCoinState] = useState<Coin>(getInitialCoin);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        const storedSymbol = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (storedSymbol) {
-            const coin = COINS.find(c => c.symbol === storedSymbol);
-            if (coin) setSelectedCoinState(coin);
-        }
         setIsInitialized(true);
     }, []);
 
     const setSelectedCoin = (coin: Coin) => {
+        localStorage.setItem(STORAGE_KEY, coin.symbol);
         setSelectedCoinState(coin);
-        localStorage.setItem(LOCAL_STORAGE_KEY, coin.symbol);
     };
 
-    return { selectedCoin, setSelectedCoin, isInitialized };
+    const reset = () => {
+        setSelectedCoin(COINS[0]);
+    };
+
+    return {
+        selectedCoin,
+        setSelectedCoin,
+        isInitialized,
+        reset,
+    };
 };

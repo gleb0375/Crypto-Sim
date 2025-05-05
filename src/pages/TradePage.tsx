@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TradingChart from "../common-components/trade-page-ui/chart/TradingChart";
 import CoinInfoComponent from "../common-components/trade-page-ui/coin/CoinInfoComponent.tsx";
@@ -9,6 +9,7 @@ import MobileTradePanel from "./TradePage.mobile";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
 import { useTradePage } from "../hooks/trade-page/useTradePage.ts";
+import ErrorModal from "../common-components/modals/ErrorModal.tsx";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -89,8 +90,17 @@ const TradePage: React.FC = () => {
         intervalReady
     } = useTradePage();
 
+    const [showError, setShowError] = useState(false);
+
+    useEffect(() => {
+        if (error) {
+            setShowError(true);
+            setSelectedCoin(COINS[0]);
+            setSelectedInterval(TIME_INTERVALS[2]);
+        }
+    }, [error]);
+
     if (!coinReady || !intervalReady || isLoading) return <Loader />;
-    if (error) return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
 
     return (
         <>
@@ -139,6 +149,13 @@ const TradePage: React.FC = () => {
                 name={selectedCoin.name}
                 price={displayPrice}
             />
+
+            {showError && (
+                <ErrorModal
+                    error={(error as Error)?.message || "Unexpected error occurred."}
+                    onClose={() => setShowError(false)}
+                />
+            )}
         </>
     );
 };

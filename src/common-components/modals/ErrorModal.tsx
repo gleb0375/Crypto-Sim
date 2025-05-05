@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
-import {TradeSuccessModalProps} from "../../../types/trade.types.ts";
 
 const Overlay = styled.div`
     position: fixed;
@@ -18,7 +17,7 @@ const Overlay = styled.div`
 
 const Modal = styled.div`
     position: relative;
-    background: #dce9fc;
+    background: #fff3f3;
     padding: 2vh 2vw;
     border-radius: 12px;
     width: 90%;
@@ -26,7 +25,6 @@ const Modal = styled.div`
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     font-family: 'telegraf', sans-serif;
-    font-weight: 400;
 `;
 
 const CloseIcon = styled.button`
@@ -38,7 +36,6 @@ const CloseIcon = styled.button`
     color: #333;
     font-size: 4vh;
     cursor: pointer;
-    z-index: 10;
 
     &:hover {
         color: #000;
@@ -47,7 +44,7 @@ const CloseIcon = styled.button`
 
 const Title = styled.h2`
     font-size: 3vh;
-    color: #2e7d32;
+    color: #d32f2f;
     margin-bottom: 2vh;
 `;
 
@@ -56,22 +53,21 @@ const Message = styled.p`
     color: #1b1b1b;
 `;
 
-const TradeSuccessModal: React.FC<TradeSuccessModalProps> = ({ symbol, amount, value, mode, onClose }) => {
-    const verb = mode === "buy" ? "bought" : "sold";
+interface Props {
+    error: string;
+    onClose: () => void;
+}
 
-    return (
-        <Overlay onClick={onClose}>
-            <Modal onClick={(e) => e.stopPropagation()}>
-                <CloseIcon onClick={onClose}>
-                    <IoMdClose />
-                </CloseIcon>
-                <Title>Trade Successful!</Title>
-                <Message>
-                    You successfully {verb} {amount.toFixed(2)} {symbol} for ${value.toFixed(2)}
-                </Message>
-            </Modal>
-        </Overlay>
-    );
-};
+const ErrorModal: React.FC<Props> = ({ error, onClose }) => (
+    <Overlay onClick={onClose}>
+        <Modal onClick={(e) => e.stopPropagation()}>
+            <CloseIcon onClick={onClose}>
+                <IoMdClose />
+            </CloseIcon>
+            <Title>Something went wrong</Title>
+            <Message>{error}</Message>
+        </Modal>
+    </Overlay>
+);
 
-export default TradeSuccessModal;
+export default ErrorModal;

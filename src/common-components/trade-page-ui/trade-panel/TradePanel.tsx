@@ -3,7 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import ModeSwitch from "./ModeSwitch.tsx";
 import { TradePanelProps } from "../../../types/trade.types.ts";
 import { useTradePanel } from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
-import TradeSuccessModal from "./TradeSuccessModal";
+import TradeSuccessModal from "../../modals/TradeSuccessModal.tsx";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -229,7 +229,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
 
             {showSuccessModal && lastTrade && (
                 <TradeSuccessModal
-                    symbol={symbol}
+                    name={name}
                     amount={lastTrade.amount}
                     value={lastTrade.value}
                     mode={mode}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import WalletScrollBoxItem from './WalletScrollBoxItem.tsx';
 import { WalletScrollBoxProps } from '../../../types/coin.types.ts';
-import CoinDetailModal from './CoinDetailModal.tsx';
+import CoinDetailModal from '../../modals/CoinDetailModal.tsx';
 import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../../constants/wallet.constants.ts';
 
 

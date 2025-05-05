@@ -11,7 +11,7 @@ export interface MobileTradePanelProps extends TradePanelProps {
 }
 
 export interface TradeSuccessModalProps {
-    symbol: string;
+    name: string;
     amount: number;
     value: number;
     mode: "buy" | "sell";

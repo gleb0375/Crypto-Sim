@@ -1,23 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { TIME_INTERVALS } from "../../constants/market.constans.ts";
 
-const LOCAL_STORAGE_KEY = "selectedInterval";
+const STORAGE_KEY = "selectedInterval";
 
 export const useSelectedInterval = () => {
-    const [selectedInterval, setSelectedIntervalState] = useState("1m");
+    const getInitialInterval = (): string => {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return TIME_INTERVALS.includes(stored!) ? stored! : TIME_INTERVALS[3];
+    };
+
+    const [selectedInterval, setSelectedIntervalState] = useState<string>(getInitialInterval);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (stored) {
-            setSelectedIntervalState(stored);
-        }
         setIsInitialized(true);
     }, []);
 
     const setSelectedInterval = (interval: string) => {
+        localStorage.setItem(STORAGE_KEY, interval);
         setSelectedIntervalState(interval);
-        localStorage.setItem(LOCAL_STORAGE_KEY, interval);
     };
 
-    return { selectedInterval, setSelectedInterval, isInitialized };
+    const reset = () => {
+        setSelectedInterval(TIME_INTERVALS[0]);
+    };
+
+    return {
+        selectedInterval,
+        setSelectedInterval,
+        isInitialized,
+        reset,
+    };
 };
