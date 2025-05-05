@@ -27,7 +27,6 @@ const LeftPanel = styled.div`
     max-width: 50vh;
     width: ${LEFT_COLUMN_WIDTH};
     height: 100%;
-    gap: 2rem;
 
     @media (max-width: 768px) {
         width: 100%;

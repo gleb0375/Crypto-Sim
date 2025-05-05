@@ -5,12 +5,17 @@ import { useLivePrice } from "./useLivePrice.ts";
 import { useMobileTradeToggle } from "./useMobileTradeToggle.ts";
 
 export const useTradePage = () => {
-    const { selectedCoin, setSelectedCoin } = useSelectedCoin();
-    const { selectedInterval, setSelectedInterval } = useSelectedInterval();
-    const { livePrice, setLivePrice } = useLivePrice(selectedCoin.symbol);
+    const { selectedCoin, setSelectedCoin, isInitialized: coinReady } = useSelectedCoin();
+    const { selectedInterval, setSelectedInterval, isInitialized: intervalReady } = useSelectedInterval();
     const { isMobileTradeOpen, openMobileTrade, closeMobileTrade } = useMobileTradeToggle();
 
-    const { data, error, isLoading } = useKlines(selectedCoin.symbol, selectedInterval);
+    const isReady = coinReady && intervalReady;
+
+    const { livePrice, setLivePrice } = useLivePrice(isReady ? selectedCoin.symbol : "");
+    const { data, error, isLoading } = useKlines(
+        isReady ? selectedCoin.symbol : "",
+        isReady ? selectedInterval : ""
+    );
 
     return {
         selectedCoin,
@@ -25,5 +30,7 @@ export const useTradePage = () => {
         openMobileTrade,
         closeMobileTrade,
         setLivePrice,
+        coinReady,
+        intervalReady,
     };
 };

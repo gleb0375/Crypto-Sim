@@ -8,7 +8,7 @@ import TradePanel from "../common-components/trade-page-ui/trade-panel/TradePane
 import MobileTradePanel from "./TradePage.mobile";
 import { COINS } from "../constants/coins.constants";
 import { TIME_INTERVALS } from "../constants/market.constans";
-import {useTradePage} from "../hooks/trade-page/useTradePage.ts";
+import { useTradePage } from "../hooks/trade-page/useTradePage.ts";
 
 const ContainerCoinDetail = styled.div`
     display: flex;
@@ -85,10 +85,11 @@ const TradePage: React.FC = () => {
         openMobileTrade,
         closeMobileTrade,
         setLivePrice,
+        coinReady,
+        intervalReady
     } = useTradePage();
 
-
-    if (isLoading) return <Loader />;
+    if (!coinReady || !intervalReady || isLoading) return <Loader />;
     if (error) return <ContainerCoinDetail>Error: {(error as Error).message}</ContainerCoinDetail>;
 
     return (
