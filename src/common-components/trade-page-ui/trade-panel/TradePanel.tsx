@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import ModeSwitch from "./ModeSwitch.tsx";
 import { TradePanelProps } from "../../../types/trade.types.ts";
 import { useTradePanel } from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
@@ -116,17 +116,33 @@ const ActionButton = styled.button<{ mode: "buy" | "sell" }>`
     }
 `;
 
-const ErrorInputWrapper = styled(UnitWrapper)<{ hasError?: boolean }>`
-    ${props => props.hasError && `
+const shake = keyframes`
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+`;
+
+const ErrorInputWrapper = styled(UnitWrapper)<{ hasError?: boolean; shake?: boolean }>`
+    ${props => props.hasError && css`
         input {
             border: 1px solid #ff4d4f;
         }
     `}
+
+    ${props => props.shake && css`
+        animation: ${shake} 0.4s ease-in-out;
+    `}
 `;
 
-const BalanceValue = styled.div<{ hasError?: boolean }>`
+const BalanceValue = styled.div<{ hasError?: boolean; shake?: boolean }>`
     color: ${props => props.hasError ? "#ff4d4f" : "#fff"};
     font-size: 0.9rem;
+
+    ${props => props.shake && css`
+        animation: ${shake} 0.4s ease-in-out;
+    `}
 `;
 
 const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
@@ -141,6 +157,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
         handleExecuteTrade,
         resetForm,
         hasInsufficientBalance,
+        shake,
     } = useTradePanel(symbol, price);
 
     const [lastTrade, setLastTrade] = useState<{ amount: number; value: number } | null>(null);
@@ -161,7 +178,10 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
             <Section>
                 <Row>
                     <Label>Available Balance</Label>
-                    <BalanceValue hasError={hasInsufficientBalance}>
+                    <BalanceValue
+                        hasError={hasInsufficientBalance}
+                        shake={mode === "sell" && hasInsufficientBalance && shake}
+                    >
                         {availableBalanceDisplay} {mode === "buy" ? "USDT" : name}
                     </BalanceValue>
                 </Row>
@@ -185,7 +205,10 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                 </div>
                 <div>
                     <Label>Order Value</Label>
-                    <ErrorInputWrapper hasError={mode === "buy" && hasInsufficientBalance}>
+                    <ErrorInputWrapper
+                        hasError={mode === "buy" && hasInsufficientBalance}
+                        shake={mode === "buy" && hasInsufficientBalance && shake}
+                    >
                         <EditableInput
                             type="number"
                             placeholder="0"

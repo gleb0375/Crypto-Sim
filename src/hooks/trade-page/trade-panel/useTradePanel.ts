@@ -5,11 +5,13 @@ import { useLastChangedRef } from "./useLastChangedRef.ts";
 import { useTradeCalculations } from "./useTradeCalculations.ts";
 import { useTradeBalance } from "./useTradeBalance.ts";
 import { useExecuteTrade } from "./useExecuteTrade.ts";
+import { useShakeOnError } from "./useShakeOnError.ts";
 
 export const useTradePanel = (symbol: string, price?: number) => {
     const { getBalance, executeTrade } = useWallet();
     const { mode, setMode } = useTradeMode();
     const lastChanged = useLastChangedRef();
+
     const {
         qty,
         orderValue,
@@ -36,6 +38,8 @@ export const useTradePanel = (symbol: string, price?: number) => {
         executeTrade,
     });
 
+    const shake = useShakeOnError(hasInsufficientBalance);
+
     return {
         mode,
         setMode,
@@ -47,5 +51,6 @@ export const useTradePanel = (symbol: string, price?: number) => {
         handleExecuteTrade,
         resetForm,
         hasInsufficientBalance,
+        shake,
     };
 };
