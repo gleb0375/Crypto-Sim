@@ -2,11 +2,8 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useWallet } from '../../contexts/WalletContext.tsx';
 import { IoMdClose } from "react-icons/io";
+import {CoinDetailModalProps} from "../../types/modals.types.ts";
 
-interface Props {
-    symbol: string;
-    onClose: () => void;
-}
 
 const Overlay = styled.div`
     position: fixed;
@@ -97,7 +94,7 @@ const Value = styled.span`
 `;
 
 
-const CoinDetailModal: React.FC<Props> = ({ symbol, onClose }) => {
+const CoinDetailModal: React.FC<CoinDetailModalProps> = ({ symbol, onClose }) => {
     const { wallet } = useWallet();
     const coin = wallet.find(c => c.symbol === symbol);
 

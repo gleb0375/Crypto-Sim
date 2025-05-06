@@ -11,7 +11,7 @@ import { TIME_INTERVALS } from "../constants/market.constans";
 import { useTradePage } from "../hooks/trade-page/useTradePage.ts";
 import ErrorModal from "../common-components/modals/ErrorModal.tsx";
 
-const ContainerCoinDetail = styled.div`
+const ContainerTrade = styled.div`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -104,7 +104,7 @@ const TradePage: React.FC = () => {
 
     return (
         <>
-            <ContainerCoinDetail>
+            <ContainerTrade>
                 <LeftPanel>
                     <CoinInfoComponent
                         coins={COINS}
@@ -139,7 +139,7 @@ const TradePage: React.FC = () => {
                 <RightPanel>
                     <TradePanel symbol={selectedCoin.symbol} name={selectedCoin.name} price={displayPrice} />
                 </RightPanel>
-            </ContainerCoinDetail>
+            </ContainerTrade>
 
             <MobileTradePanel
                 isOpen={isMobileTradeOpen}

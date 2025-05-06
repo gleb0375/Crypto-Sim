@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
-import {TradeSuccessModalProps} from "../../types/trade.types.ts";
+import { TradeSuccessModalProps } from "../../types/modals.types.ts";
 
 const Overlay = styled.div`
     position: fixed;

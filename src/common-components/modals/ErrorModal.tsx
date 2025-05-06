@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
+import {ErrorModalProps} from "../../types/modals.types.ts";
 
 const Overlay = styled.div`
     position: fixed;
@@ -53,12 +54,7 @@ const Message = styled.p`
     color: #1b1b1b;
 `;
 
-interface Props {
-    error: string;
-    onClose: () => void;
-}
-
-const ErrorModal: React.FC<Props> = ({ error, onClose }) => (
+const ErrorModal: React.FC<ErrorModalProps> = ({ error, onClose }) => (
     <Overlay onClick={onClose}>
         <Modal onClick={(e) => e.stopPropagation()}>
             <CloseIcon onClick={onClose}>

@@ -10,11 +10,3 @@ export interface MobileTradePanelProps extends TradePanelProps {
     onOpen: () => void;
 }
 
-export interface TradeSuccessModalProps {
-    name: string;
-    amount: number;
-    value: number;
-    mode: "buy" | "sell";
-    onClose: () => void;
-}
-

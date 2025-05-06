@@ -9,10 +9,10 @@ import WalletPage from "./pages/WalletPage.tsx";
 
 const ContentContainer = styled.main`
     position: relative;
-    top: 8vh;        
-    height: 92vh;    
+    top: 8vh;
+    height: 92vh;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: #1e1f22;
 `;
 
 const App: React.FC = () => {
