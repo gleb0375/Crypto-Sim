@@ -7,20 +7,17 @@ import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../../c
 
 
 const ScrollBoxContainer = styled.div`
-    background:#1e1e24;
-    border-radius:1rem;
-    box-shadow:0 0 10px rgba(0,0,0,.4);
-
-    width:${LEFT_COLUMN_WIDTH};
-    padding:1rem;
-    margin-top:1rem;
-
-    box-sizing:border-box;
-
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-    min-height:0;
+    background: #1e1e24;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+    width: ${LEFT_COLUMN_WIDTH};
+    padding: 1rem;
+    margin-top: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
 `;
 
 const HeaderRow = styled.div`
@@ -63,12 +60,12 @@ const HeaderRow = styled.div`
 `;
 
 const ItemsContainer = styled.div`
-    flex:1;
-    overflow-y:auto;
-    position:relative;
-    mask-image:linear-gradient(to bottom, black 90%, transparent);
-    @ts-ignore
-    -webkit-mask-image:linear-gradient(to bottom, black 90%, transparent);
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    mask-image: linear-gradient(to bottom, black 90%, transparent);
+    @ts-ignore 
+    -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent);
 
     &::-webkit-scrollbar{width:6px;}
     &::-webkit-scrollbar-track{background:transparent;}

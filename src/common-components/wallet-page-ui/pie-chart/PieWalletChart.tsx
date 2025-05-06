@@ -1,4 +1,4 @@
-import React, {JSX} from "react";
+import React, { JSX } from "react";
 import {
     PieChart,
     Pie,
@@ -37,7 +37,7 @@ const renderLabel = (props: PieLabelRenderProps): JSX.Element | null => {
             fill={props.fill ?? "#888"}
             textAnchor={x > (props.cx ?? 0) ? "start" : "end"}
             dominantBaseline="central"
-            style={{ fontSize: "14px", fontWeight: 500 }}
+            style={{ fontSize: "2vh", fontWeight: 500 }}
         >
             {`${props.name} ${percent.toFixed(0)}%`}
         </text>
@@ -69,14 +69,14 @@ const renderLabelLine = (props: PieLabelRenderProps): JSX.Element => {
 };
 
 const PieWalletChart: React.FC<Props> = ({ data }) => (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" aspect={1}>
         <PieChart>
             <Pie
                 data={data}
                 dataKey="value"
                 nameKey="name"
-                innerRadius={60}
-                outerRadius={100}
+                innerRadius="55%"
+                outerRadius="70%"
                 labelLine={renderLabelLine}
                 label={renderLabel}
             >

@@ -37,15 +37,28 @@ const LeftPanel = styled.div`
 
 const RightPanel = styled.div`
     flex: 1;
-    padding-left: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    background-color: #16161b;
+    overflow: hidden;
+    
     @media (max-width: 768px) {
         display: none;
     }
 `;
+
+const ChartWrapper = styled.div`
+    width: 100%;
+    max-width: 85vh;
+    background-color: #dce9fc;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 
 const WalletPage: React.FC = () => {
     const { balance, filteredWallet, pieData, hideZero, toggleHideZero } = useWalletPage();
@@ -61,7 +74,9 @@ const WalletPage: React.FC = () => {
                 <WalletScrollBox coins={filteredWallet} />
             </LeftPanel>
             <RightPanel>
-                <PieWalletChart data={pieData} />
+                <ChartWrapper>
+                    <PieWalletChart data={pieData} />
+                </ChartWrapper>
             </RightPanel>
         </ContainerWallet>
     );
