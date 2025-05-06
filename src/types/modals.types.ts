@@ -15,3 +15,7 @@ export interface CoinDetailModalProps {
     symbol: string;
     onClose: () => void;
 }
+
+export interface ConfirmTradeModalProps extends TradeSuccessModalProps {
+    onConfirm: () => void;
+}

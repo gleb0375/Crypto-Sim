@@ -4,6 +4,7 @@ import ModeSwitch from "./ModeSwitch.tsx";
 import { TradePanelProps } from "../../../types/trade.types.ts";
 import { useTradePanel } from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
 import TradeSuccessModal from "../../modals/TradeSuccessModal.tsx";
+import ConfirmTradeModal from "../../modals/ConfirmTradeModal.tsx"; // ✅ новый импорт
 
 const PanelContainer = styled.div`
     display: flex;
@@ -162,6 +163,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
 
     const [lastTrade, setLastTrade] = useState<{ amount: number; value: number } | null>(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false); // ✅ новое состояние
 
     const handleTrade = () => {
         const result = handleExecuteTrade();
@@ -222,7 +224,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
             <ActionButton
                 mode={mode}
                 disabled={!qty || !price || hasInsufficientBalance}
-                onClick={handleTrade}
+                onClick={() => setShowConfirmModal(true)}
             >
                 {mode === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
             </ActionButton>
@@ -234,6 +236,20 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
                     value={lastTrade.value}
                     mode={mode}
                     onClose={() => setShowSuccessModal(false)}
+                />
+            )}
+
+            {showConfirmModal && qty && price && (
+                <ConfirmTradeModal
+                    name={name}
+                    amount={parseFloat(qty)}
+                    value={parseFloat(orderValue)}
+                    mode={mode}
+                    onClose={() => setShowConfirmModal(false)}
+                    onConfirm={() => {
+                        handleTrade();
+                        setShowConfirmModal(false);
+                    }}
                 />
             )}
         </PanelContainer>
