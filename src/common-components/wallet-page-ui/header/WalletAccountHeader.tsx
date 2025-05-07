@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { LEFT_COLUMN_WIDTH } from "../../../constants/wallet.constants.ts";
-import { WalletBalance } from "../../../types/coin.types.ts";
+import { WalletBalance } from "../../../types/wallet.types.ts";
 import { formatBtcWithSpaces, formatUsdWithSpaces } from "../../../utils/number.ts";
 import { IoIosCheckboxOutline, IoIosSquareOutline } from "react-icons/io";
+import { useWallet } from "../../../contexts/WalletContext.tsx";
+import ConfirmResetWalletModal from "../../modals/ConfirmResetWalletModal.tsx";
 
 interface Props {
     balance: WalletBalance;
@@ -12,6 +14,7 @@ interface Props {
 }
 
 const HeaderBox = styled.div`
+    font-family: 'telegraf', sans-serif;
     background-color: #1e1e24;
     padding: 2vh;
     border-radius: 1rem;
@@ -72,20 +75,62 @@ const HideZeroLabel = styled.span`
     pointer-events: none;
 `;
 
-const WalletAccountHeader: React.FC<Props> = ({ balance, hideZero, onToggleHideZero }) => {
-    return (
-        <HeaderBox>
-            <Title>Total Balance</Title>
-            <BalanceUSD>${formatUsdWithSpaces(balance.totalValueUSD)}</BalanceUSD>
-            <BalanceBTC>= {formatBtcWithSpaces(balance.totalHoldingsBTC)} BTC</BalanceBTC>
+const ResetButton = styled.button`
+    position: absolute;
+    bottom: 1.5vh;
+    left: 1.5vh;
+    background-color: transparent;
+    color: #ba0000;
+    border: 2px solid #ba0000;
+    padding: 0.6vh 1.4vh;
+    border-radius: 0.5rem;
+    font-size: 1.5vh;
+    font-family: 'telegraf', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
 
-            <HideZeroContainer>
-                <IconWrapper onClick={onToggleHideZero}>
-                    {hideZero ? <IoIosCheckboxOutline /> : <IoIosSquareOutline />}
-                </IconWrapper>
-                <HideZeroLabel>Hide Zero Balances</HideZeroLabel>
-            </HideZeroContainer>
-        </HeaderBox>
+    &:hover {
+        background-color: #ba0000;
+        color: #fff;
+        box-shadow: 0 0 8px rgba(186, 0, 0, 0.5);
+    }
+`;
+
+const WalletAccountHeader: React.FC<Props> = ({ balance, hideZero, onToggleHideZero }) => {
+    const { resetWallet } = useWallet();
+    const [showModal, setShowModal] = useState(false);
+
+    const handleResetConfirm = () => {
+        resetWallet();
+        setShowModal(false);
+    };
+
+    return (
+        <>
+            <HeaderBox>
+                <Title>Total Balance</Title>
+                <BalanceUSD>${formatUsdWithSpaces(balance.totalValueUSD)}</BalanceUSD>
+                <BalanceBTC>= {formatBtcWithSpaces(balance.totalHoldingsBTC)} BTC</BalanceBTC>
+
+                <HideZeroContainer>
+                    <IconWrapper onClick={onToggleHideZero}>
+                        {hideZero ? <IoIosCheckboxOutline /> : <IoIosSquareOutline />}
+                    </IconWrapper>
+                    <HideZeroLabel>Hide Zero Balances</HideZeroLabel>
+                </HideZeroContainer>
+
+                <ResetButton onClick={() => setShowModal(true)}>Reset Wallet</ResetButton>
+            </HeaderBox>
+
+            {showModal && (
+                <ConfirmResetWalletModal
+                    onConfirm={handleResetConfirm}
+                    onClose={() => setShowModal(false)}
+                />
+            )}
+        </>
     );
 };
 

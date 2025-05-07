@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TIME_INTERVALS } from "../../constants/market.constans.ts";
+import { TIME_INTERVALS } from "../../constants/market.constants.ts";
 
 const STORAGE_KEY = "selectedInterval";
 

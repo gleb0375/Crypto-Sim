@@ -1,12 +1,6 @@
 import { useMemo, useRef } from "react";
-import { WalletCoinItem } from "../../types/coin.types.ts";
+import {PieChartEntry, WalletCoinItem} from "../../types/wallet.types.ts";
 import { COINS, USDT_COIN } from "../../constants/coins.constants.ts";
-
-interface PieChartEntry {
-    name: string;
-    value: number;
-    color: string;
-}
 
 const isSignificantlyDifferent = (prev: PieChartEntry[], next: PieChartEntry[], threshold = 0.01) => {
     if (prev.length !== next.length) return true;

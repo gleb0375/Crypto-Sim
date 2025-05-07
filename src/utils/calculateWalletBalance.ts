@@ -1,4 +1,4 @@
-import {WalletBalance, WalletCoinItem} from "../types/coin.types.ts";
+import {WalletBalance, WalletCoinItem} from "../types/wallet.types.ts";
 
 export const calculateWalletBalance = (
     coins: WalletCoinItem[],

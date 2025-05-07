@@ -1,5 +1,5 @@
 import {COINS, START_USDT_BALANCE, USDT_COIN} from "../constants/coins.constants";
-import { WalletCoinItem } from "../types/coin.types";
+import {WalletCoinItem} from "../types/wallet.types.ts";
 
 export const buildInitialWallet = (): WalletCoinItem[] => {
     const usdtItem: WalletCoinItem = {

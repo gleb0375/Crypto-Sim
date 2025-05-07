@@ -1,14 +1,7 @@
 import { useMemo } from "react";
+import {useTradeBalanceProps} from "../../../types/trade.types.ts";
 
-interface Props {
-    mode: "buy" | "sell";
-    symbol: string;
-    qty: string;
-    price?: number;
-    getBalance: (symbol: string) => number;
-}
-
-export const useTradeBalance = ({ mode, symbol, qty, price, getBalance }: Props) => {
+export const useTradeBalance = ({ mode, symbol, qty, price, getBalance }: useTradeBalanceProps) => {
     const availableBalance = useMemo(() => {
         return mode === "buy" ? getBalance("USDT") : getBalance(symbol);
     }, [mode, symbol, getBalance]);

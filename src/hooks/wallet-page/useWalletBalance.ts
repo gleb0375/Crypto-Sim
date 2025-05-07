@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import {WalletCoinItem} from "../../types/coin.types.ts";
-import {calculateWalletBalance} from "../../utils/calculateWalletBalance.ts";
+import { WalletCoinItem } from "../../types/wallet.types.ts";
+import { calculateWalletBalance } from "../../utils/calculateWalletBalance.ts";
 
 export const useWalletBalance = (
     wallet: WalletCoinItem[],

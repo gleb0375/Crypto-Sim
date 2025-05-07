@@ -1,11 +1,4 @@
-interface Props {
-    mode: "buy" | "sell";
-    symbol: string;
-    qty: string;
-    price?: number;
-    getBalance: (symbol: string) => number;
-    executeTrade: (mode: "buy" | "sell", symbol: string, price: number, amount: number) => void;
-}
+import {UseExecuteTradeProps} from "../../../types/trade.types.ts";
 
 export const useExecuteTrade = ({
                                     mode,
@@ -14,7 +7,7 @@ export const useExecuteTrade = ({
                                     price,
                                     getBalance,
                                     executeTrade,
-                                }: Props) => {
+                                }: UseExecuteTradeProps ) => {
     return (): { success: boolean; amount?: number; value?: number } => {
         if (!price) return { success: false };
 

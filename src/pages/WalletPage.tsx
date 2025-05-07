@@ -51,7 +51,7 @@ const RightPanel = styled.div`
 const ChartWrapper = styled.div`
     width: 100%;
     max-width: 85vh;
-    background-color: #dce9fc;
+    background-color: #535561;
     border-radius: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     display: flex;

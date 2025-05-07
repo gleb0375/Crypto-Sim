@@ -30,6 +30,18 @@ const NavSection = styled.nav`
     }
 `;
 
+const IdentityBox = styled.div`
+    position: absolute;
+    left: 2vh;
+    top: 1.2vh;
+    color: #ccc;
+    font-size: 2vh;
+    line-height: 1.4;
+    text-align: left;
+    white-space: pre-line;
+`;
+
+
 const NavButton = styled.button<{ isActive: boolean }>`
     display: inline-block;
     position: relative;
@@ -135,7 +147,6 @@ const Sidebar = styled.div<{ isOpen: boolean }>`
     width: 200px;
     height: calc(100vh - 8vh);
     background-color: #13161c;
-    //box-shadow: -2px 0 8px rgba(0, 0, 0, 0.5);
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -159,10 +170,15 @@ const Header: React.FC = () => {
 
     return (
         <HeaderContainer>
+            <IdentityBox>
+                Hleb Hnatsiuk
+                {"\n"}A23B0392P
+            </IdentityBox>
+
             <NavSection>
                 <NavButton
-                    onClick={() => navigate(ROUTES.HOME)}
-                    isActive={location.pathname === ROUTES.HOME}
+                    onClick={() => navigate(ROUTES.ABOUT)}
+                    isActive={location.pathname === ROUTES.ABOUT}
                 >
                     About
                 </NavButton>
@@ -185,10 +201,10 @@ const Header: React.FC = () => {
             <Sidebar isOpen={sidebarOpen}>
                 <NavButton
                     onClick={() => {
-                        navigate(ROUTES.HOME);
+                        navigate(ROUTES.ABOUT);
                         setSidebarOpen(false);
                     }}
-                    isActive={location.pathname === ROUTES.HOME}
+                    isActive={location.pathname === ROUTES.ABOUT}
                 >
                     About
                 </NavButton>

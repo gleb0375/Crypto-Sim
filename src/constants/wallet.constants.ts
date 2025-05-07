@@ -1,5 +1,4 @@
 export const RANK_COL_WIDTH   = '3.5rem';
-export const NAME_MIN_WIDTH   = '8rem';
 export const HOLD_COL_WIDTH   = '6.5rem';
 export const VALUE_COL_WIDTH  = '5rem';
 

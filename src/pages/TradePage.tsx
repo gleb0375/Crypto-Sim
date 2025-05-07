@@ -7,7 +7,7 @@ import Loader from "../common-components/loader/Loader";
 import TradePanel from "../common-components/trade-page-ui/trade-panel/TradePanel.tsx";
 import MobileTradePanel from "./TradePage.mobile";
 import { COINS } from "../constants/coins.constants";
-import { TIME_INTERVALS } from "../constants/market.constans";
+import { TIME_INTERVALS } from "../constants/market.constants.ts";
 import { useTradePage } from "../hooks/trade-page/useTradePage.ts";
 import ErrorModal from "../common-components/modals/ErrorModal.tsx";
 

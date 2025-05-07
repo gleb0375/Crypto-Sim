@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { WalletCoinItem } from "../types/coin.types.ts";
+import { WalletCoinItem } from "../types/wallet.types.ts";
 import { buildInitialWallet } from "../utils/buildInitialWallet.ts";
 import { useAllTickerPrices } from "../hooks/wallet-context/useAllTickerPrices.ts";
 
@@ -9,6 +9,7 @@ interface WalletContextType {
     wallet: WalletCoinItem[];
     getBalance(symbol: string): number;
     executeTrade(mode: TradeMode, symbol: string, price: number, amount: number): void;
+    resetWallet(): void;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -63,8 +64,14 @@ export const WalletProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         );
     };
 
+    const resetWallet = () => {
+        const initial = buildInitialWallet();
+        setWallet(initial);
+        localStorage.setItem(WALLET_KEY, JSON.stringify(initial));
+    };
+
     return (
-        <WalletContext.Provider value={{ wallet, getBalance, executeTrade }}>
+        <WalletContext.Provider value={{ wallet, getBalance, executeTrade, resetWallet }}>
             {children}
         </WalletContext.Provider>
     );

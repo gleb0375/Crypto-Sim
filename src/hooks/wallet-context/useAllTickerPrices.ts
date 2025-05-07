@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { COINS } from "../../constants/coins.constants.ts";
-import { BINANCE_TICKER_PRICE_ENDPOINT } from "../../constants/market.constans.ts";
+import { BINANCE_TICKER_PRICE_ENDPOINT } from "../../constants/market.constants.ts";
 
 type PricesMap = Record<string, number>;
 

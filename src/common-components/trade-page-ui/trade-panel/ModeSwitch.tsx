@@ -1,4 +1,3 @@
-// src/common-components/trade/ModeSwitch.tsx
 import React from "react";
 import styled from "styled-components";
 

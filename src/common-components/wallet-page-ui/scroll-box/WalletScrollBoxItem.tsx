@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { WalletScrollBoxItemProps } from "../../../types/coin.types.ts";
+import { WalletScrollBoxItemProps } from "../../../types/wallet.types.ts";
 import {formatCompact} from "../../../utils/number.ts";
 
 

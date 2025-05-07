@@ -8,16 +8,7 @@ import {
 } from "recharts";
 //@ts-ignore
 import { PieLabelRenderProps } from "recharts/types/component/Pie";
-
-interface PieDataItem {
-    name: string;
-    value: number;
-    color: string;
-}
-
-interface Props {
-    data: PieDataItem[];
-}
+import { PieWalletChartProps } from "../../../types/wallet.types.ts";
 
 const MIN_PERCENT_TO_LABEL = 1;
 
@@ -68,7 +59,7 @@ const renderLabelLine = (props: PieLabelRenderProps): JSX.Element => {
     );
 };
 
-const PieWalletChart: React.FC<Props> = ({ data }) => (
+const PieWalletChart: React.FC<PieWalletChartProps > = ({ data }) => (
     <ResponsiveContainer width="100%" aspect={1}>
         <PieChart>
             <Pie

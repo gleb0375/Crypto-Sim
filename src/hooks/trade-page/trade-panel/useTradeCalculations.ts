@@ -1,13 +1,5 @@
-import {MutableRefObject, useEffect} from "react";
-
-interface Props {
-    qty: string;
-    orderValue: string;
-    price?: number;
-    setQty: (value: string) => void;
-    setOrderValue: (value: string) => void;
-    lastChanged: MutableRefObject<"qty" | "orderValue" | null>;
-}
+import { useEffect } from "react";
+import {useTradeCalculationsProps} from "../../../types/trade.types.ts";
 
 export const useTradeCalculations = ({
                                          qty,
@@ -16,7 +8,7 @@ export const useTradeCalculations = ({
                                          setQty,
                                          setOrderValue,
                                          lastChanged,
-                                     }: Props) => {
+                                     }: useTradeCalculationsProps) => {
     useEffect(() => {
         if (!price || lastChanged.current !== "qty") return;
 

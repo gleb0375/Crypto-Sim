@@ -3,7 +3,7 @@ import {
     BINANCE_KLINES_ENDPOINT,
     BINANCE_TICKER_PRICE_ENDPOINT,
     DEFAULT_KLINE_LIMIT
-} from "../constants/market.constans.ts";
+} from "../constants/market.constants.ts";
 
 interface GetKlinesOptions {
     startTime?: number;
@@ -26,6 +26,11 @@ export async function getKlines(
 
     if (startTime) params.append("startTime", startTime.toString());
     if (endTime) params.append("endTime", endTime.toString());
+
+    if (!symbol || !interval) {
+        throw new Error("Both symbol and interval are required.");
+    }
+
 
     const url = `${BINANCE_KLINES_ENDPOINT}?${params.toString()}`;
     const response = await fetch(url);
@@ -53,6 +58,9 @@ export async function getKlines(
 
 export async function getTickerPrice(symbol: string): Promise<TickerPrice> {
     const url = `${BINANCE_TICKER_PRICE_ENDPOINT}?symbol=${symbol}`;
+    if (!symbol) {
+        throw new Error("Symbol is required to fetch ticker price.");
+    }
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Error fetching ticker price: ${response.statusText}`);

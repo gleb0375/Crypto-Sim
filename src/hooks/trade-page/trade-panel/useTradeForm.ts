@@ -1,4 +1,4 @@
-import {MutableRefObject, useState} from "react";
+import { MutableRefObject, useState } from "react";
 
 export const useTradeForm = (
     lastChanged: MutableRefObject<"qty" | "orderValue" | null>
@@ -6,14 +6,27 @@ export const useTradeForm = (
     const [qty, setQty] = useState("");
     const [orderValue, setOrderValue] = useState("");
 
+    const sanitizeNumberInput = (value: string) => {
+        if (value === "") return true;
+
+        if (value.trim().startsWith("-")) return false;
+
+        const parsed = parseFloat(value);
+        return !isNaN(parsed);
+    };
+
     const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!sanitizeNumberInput(value)) return;
         lastChanged.current = "qty";
-        setQty(e.target.value);
+        setQty(value);
     };
 
     const handleOrderValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (!sanitizeNumberInput(value)) return;
         lastChanged.current = "orderValue";
-        setOrderValue(e.target.value);
+        setOrderValue(value);
     };
 
     const resetForm = () => {

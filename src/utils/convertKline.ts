@@ -1,5 +1,5 @@
 import { KLineData } from "klinecharts";
-import {MinimalKlineData} from "../types/market.types.ts";
+import { MinimalKlineData } from "../types/market.types.ts";
 
 export const convertKline = (item: MinimalKlineData): KLineData => ({
     timestamp: item.openTime,

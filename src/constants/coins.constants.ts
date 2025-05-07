@@ -1,6 +1,6 @@
 import { Coin } from "../types/coin.types";
 
-export const START_USDT_BALANCE = 100456;
+export const START_USDT_BALANCE = 1000000;
 
 export const USDT_COIN: Coin = {
     symbol: "USDT",
@@ -29,5 +29,5 @@ export const COINS: Coin[] = [
     { symbol: "AVAXUSDT", name: "AVAX", logo: "/assets/logos/avalanche-avax-logo.svg", color: "#e84142" },
     { symbol: "MATICUSDT", name: "MATIC", logo: "/assets/logos/polygon-matic-logo.svg", color: "#8247e5" },
     { symbol: "VETUSDT", name: "VET", logo: "/assets/logos/vechain-vet-logo.svg", color: "#15bdd8" },
-    { symbol: "TRONUSDT", name: "TRON", logo: "/assets/logos/tron-trx-logo.svg", color: "#ec1d27" },
+    { symbol: "TRONUSDT", name: "TRON", logo: "/assets/logos/tron-trx-logo.svg", color: "#ec1d27" }, // does exist on binance -> error
 ];
