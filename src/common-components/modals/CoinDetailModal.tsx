@@ -114,7 +114,7 @@ const CoinDetailModal: React.FC<CoinDetailModalProps> = ({ symbol, onClose }) =>
 
                 <InfoRow>
                     <Label>Holdings:</Label>
-                    <Value>{coin.holdings.toFixed(2)}</Value>
+                    <Value>{coin.holdings.toFixed(6)}</Value>
                 </InfoRow>
                 <InfoRow>
                     <Label>Value:</Label>

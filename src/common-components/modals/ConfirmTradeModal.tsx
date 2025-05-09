@@ -69,7 +69,7 @@ const ConfirmTradeModal: React.FC<ConfirmTradeModalProps> = ({
             <Modal onClick={(e) => e.stopPropagation()}>
                 <Title>Confirm Trade</Title>
                 <Message>
-                    Are you sure you want to {verb} {amount.toFixed(2)} {name} for ${value.toFixed(2)}?
+                    Are you sure you want to {verb} {amount.toFixed(6)} {name} for ${value.toFixed(2)}?
                 </Message>
                 <ButtonRow>
                     <Button onClick={onClose}>Cancel</Button>
