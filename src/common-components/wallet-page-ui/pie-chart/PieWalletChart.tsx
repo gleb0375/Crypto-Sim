@@ -59,7 +59,7 @@ const renderLabelLine = (props: PieLabelRenderProps): JSX.Element => {
     );
 };
 
-const PieWalletChart: React.FC<PieWalletChartProps > = ({ data }) => (
+const PieWalletChart: React.FC<PieWalletChartProps > = ({ data, highlightedSymbol }) => (
     <ResponsiveContainer width="100%" aspect={1}>
         <PieChart>
             <Pie
@@ -72,14 +72,28 @@ const PieWalletChart: React.FC<PieWalletChartProps > = ({ data }) => (
                 label={renderLabel}
             >
                 {data.map((entry, i) => (
-                    <Cell key={`cell-${i}`} fill={entry.color} />
+                    <Cell
+                        key={i}
+                        fill={entry.color}
+                        style={{
+                            opacity:
+                                highlightedSymbol && entry.symbol !== highlightedSymbol
+                                    ? 0.35
+                                    : 1,
+                            transition: "opacity .3s ease",
+                        }}
+                    />
                 ))}
+
             </Pie>
             <Tooltip formatter={(val: number) => `$${val.toLocaleString()}`} />
         </PieChart>
     </ResponsiveContainer>
 );
 
-export default React.memo(PieWalletChart, (prev, next) =>
-    JSON.stringify(prev.data) === JSON.stringify(next.data)
+export default React.memo(
+    PieWalletChart,
+    (prev, next) =>
+        JSON.stringify(prev.data) === JSON.stringify(next.data) &&
+        prev.highlightedSymbol === next.highlightedSymbol
 );

@@ -8,6 +8,8 @@ import ConfirmTradeModal from "../../modals/ConfirmTradeModal.tsx";
 import {useWallet} from "../../../contexts/WalletContext.tsx";
 import TradeSuccessModal from "../../modals/TradeSuccessModal.tsx";
 import ErrorModal from "../../modals/ErrorModal.tsx";
+import {SortDirection, SortKey, sortWalletCoins} from "../../../utils/sort.ts";
+import {useWalletPieData} from "../../../hooks/wallet-page/useWalletPieData.ts";
 
 
 const ScrollBoxContainer = styled.div`
@@ -63,6 +65,12 @@ const HeaderRow = styled.div`
         padding-right: 0.5vh;
     }
 
+    span:nth-child(2),
+    span:nth-child(3),
+    span:nth-child(4) {
+        cursor: pointer;
+    }
+
     @media (max-width: 480px) {
         grid-template-columns: ${MOBILE_COL_TEMPLATE};
     }
@@ -82,35 +90,60 @@ const ItemsContainer = styled.div`
     &::-webkit-scrollbar-thumb:hover{background:#777;}
 `;
 
-const WalletScrollBox: React.FC<WalletScrollBoxProps> = ({ coins }) => {
+const WalletScrollBox: React.FC<WalletScrollBoxProps> = ({ coins, onHighlight }) => {
     const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
     const [selectedCoinToSell, setSelectedCoinToSell] = useState<typeof coins[0] | null>(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [lastTrade, setLastTrade] = useState<{ name: string; amount: number; value: number } | null>(null);
     const [showErrorModal, setShowErrorModal] = useState(false);
 
+    const [sortKey, setSortKey] = useState<SortKey>(null);
+    const [sortDirection, setSortDirection] = useState<SortDirection>(null);
 
     const { executeTrade, wallet } = useWallet();
+
+    const pieData = useWalletPieData(wallet);
+    const highlightableSymbols = pieData.map(entry => entry.symbol);
+
+    const handleSort = (key: SortKey) => {
+        if (sortKey !== key) {
+            setSortKey(key);
+            setSortDirection(key === "name" ? "asc" : "desc");
+        } else {
+            if (sortDirection === "desc") {
+                setSortDirection("asc");
+            } else if (sortDirection === "asc") {
+                setSortKey(null);
+                setSortDirection(null);
+            } else {
+                setSortDirection("desc");
+            }
+        }
+    };
+
+    const sortedCoins = sortWalletCoins(coins, sortKey, sortDirection);
 
     return (
         <>
             <ScrollBoxContainer>
                 <HeaderRow>
                     <span>#</span>
-                    <span>Name</span>
-                    <span>Holdings</span>
-                    <span>Value</span>
+                    <span onClick={() => handleSort("name")}>Name</span>
+                    <span onClick={() => handleSort("holdings")}>Holdings</span>
+                    <span onClick={() => handleSort("value")}>Value</span>
                     <span>Sell All</span>
                 </HeaderRow>
 
                 <ItemsContainer>
-                    {coins.map((c, i) => (
+                    {sortedCoins.map((c, i) => (
                         <div key={c.symbol} onClick={() => setSelectedSymbol(c.symbol)}>
                             <WalletScrollBoxItem
                                 coin={c}
                                 index={i + 1}
                                 onSellAll={() => setSelectedCoinToSell(c)}
                                 onError={() => setShowErrorModal(true)}
+                                onHighlight={onHighlight}
+                                highlightableSymbols={highlightableSymbols}
                             />
                         </div>
                     ))}

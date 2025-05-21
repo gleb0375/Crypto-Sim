@@ -1,13 +1,8 @@
 import {Coin} from "./coin.types.ts";
 
-interface PieDataItem {
-    name: string;
-    value: number;
-    color: string;
-}
-
 export interface PieWalletChartProps  {
     data: PieDataItem[];
+    highlightedSymbol?: string | null;
 }
 
 export interface WalletCoinItem extends Coin {
@@ -24,6 +19,7 @@ export interface WalletBalance {
 
 export interface WalletScrollBoxProps {
     coins: WalletCoinItem[];
+    onHighlight: (symbol: string) => void;
 }
 
 export interface WalletScrollBoxItemProps {
@@ -31,9 +27,12 @@ export interface WalletScrollBoxItemProps {
     index: number;
     onSellAll: () => void;
     onError: () => void;
+    onHighlight: (symbol: string) => void;
+    highlightableSymbols: string[];
 }
 
-export interface PieChartEntry {
+export interface PieDataItem {
+    symbol: string;
     name: string;
     value: number;
     color: string;

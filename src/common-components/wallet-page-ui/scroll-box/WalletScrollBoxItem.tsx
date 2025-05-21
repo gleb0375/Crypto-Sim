@@ -62,11 +62,7 @@ const Holdings = styled.div`
     width: 6rem;
     text-align: center;
     color: #2e2e2e;
-    font-size: 2vh;
-   
-    @media (max-width: 480px) {
-        font-size: 1.8vh;
-    }
+    font-size: 1.8vh;
 `;
 
 const Value = styled.div`
@@ -75,11 +71,7 @@ const Value = styled.div`
     font-weight: bold;
     color: #1a1a1a;
     padding-right: 1rem;
-    font-size: 2vh;
-
-    @media (max-width: 480px) {
-        font-size: 1.8vh;
-    }
+    font-size: 1.8vh;
 `;
 
 const SellButton = styled.button`
@@ -100,16 +92,31 @@ const SellButton = styled.button`
 `;
 
 
-const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index, onSellAll, onError }) => {
+const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index, onSellAll, onError, onHighlight, highlightableSymbols }) => {
     const displayHoldings = formatCompact(coin.holdings);
     const displayValue    = formatCompact(coin.value);
+    const isHighlightable = highlightableSymbols.includes(coin.symbol);
 
     return (
         <ItemContainer>
             <Rank bg={coin.color}>{index}</Rank>
             <CoinInfo>
                 <Logo src={coin.logo} alt={coin.name} />
-                <Name>{coin.name}</Name>
+                <Name
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (isHighlightable) {
+                            onHighlight(coin.symbol);
+                        }
+                    }}
+                    style={{
+                        cursor: isHighlightable ? "pointer" : "not-allowed",
+                        opacity: isHighlightable ? 1 : 0.6,
+                        pointerEvents: isHighlightable ? "auto" : "none"
+                    }}
+                >
+                    {coin.name}
+                </Name>
             </CoinInfo>
             <Holdings title={coin.holdings.toString()}>{displayHoldings}</Holdings>
             <Value title={coin.value.toString()}>{displayValue}</Value>
@@ -126,9 +133,7 @@ const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index, 
             >
                 <GiPayMoney />
             </SellButton>
-
         </ItemContainer>
-
     );
 };
 

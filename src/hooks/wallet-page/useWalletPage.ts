@@ -4,6 +4,7 @@ import { useWalletPieData } from "./useWalletPieData";
 import { useHideZeroPreference } from "./useHideZeroPreference";
 import {useTickerPrice} from "../trade-page/useTickerPrice.ts";
 import {useWallet} from "../../contexts/WalletContext.tsx";
+import {useHighlightedSymbol} from "./useHighlightedSymbol.ts";
 
 export const useWalletPage = () => {
     const { wallet } = useWallet();
@@ -14,6 +15,8 @@ export const useWalletPage = () => {
     const filteredWallet = useFilteredWallet(wallet, hideZero);
     const balance = useWalletBalance(wallet, btcPrice);
     const pieData = useWalletPieData(filteredWallet);
+    const { highlightedSymbol, setHighlightedSymbol } = useHighlightedSymbol();
+
 
     return {
         balance,
@@ -21,5 +24,7 @@ export const useWalletPage = () => {
         pieData,
         hideZero,
         toggleHideZero,
+        highlightedSymbol,
+        setHighlightedSymbol,
     };
 };

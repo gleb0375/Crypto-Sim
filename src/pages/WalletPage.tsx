@@ -61,7 +61,7 @@ const ChartWrapper = styled.div`
 
 
 const WalletPage: React.FC = () => {
-    const { balance, filteredWallet, pieData, hideZero, toggleHideZero } = useWalletPage();
+    const { balance, filteredWallet, pieData, hideZero, toggleHideZero,  highlightedSymbol, setHighlightedSymbol} = useWalletPage();
 
     return (
         <ContainerWallet>
@@ -71,11 +71,17 @@ const WalletPage: React.FC = () => {
                     hideZero={hideZero}
                     onToggleHideZero={toggleHideZero}
                 />
-                <WalletScrollBox coins={filteredWallet} />
+                <WalletScrollBox
+                    coins={filteredWallet}
+                    onHighlight={setHighlightedSymbol}
+                />
             </LeftPanel>
             <RightPanel>
                 <ChartWrapper>
-                    <PieWalletChart data={pieData} />
+                    <PieWalletChart
+                        data={pieData}
+                        highlightedSymbol={highlightedSymbol}
+                    />
                 </ChartWrapper>
             </RightPanel>
         </ContainerWallet>
