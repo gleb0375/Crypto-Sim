@@ -7,6 +7,7 @@ export const buildInitialWallet = (): WalletCoinItem[] => {
         rank: 1,
         holdings: START_USDT_BALANCE,
         value: START_USDT_BALANCE,
+        avgBuyPrice: 1,
     };
 
     const otherItems: WalletCoinItem[] = COINS.map((coin, idx) => ({
@@ -14,6 +15,7 @@ export const buildInitialWallet = (): WalletCoinItem[] => {
         rank: idx + 2,
         holdings: 0,
         value: 0,
+        avgBuyPrice: 0,
     }));
 
     return [usdtItem, ...otherItems];

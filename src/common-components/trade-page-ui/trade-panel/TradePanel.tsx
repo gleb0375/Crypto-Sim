@@ -4,7 +4,7 @@ import ModeSwitch from "./ModeSwitch.tsx";
 import { TradePanelProps } from "../../../types/trade.types.ts";
 import { useTradePanel } from "../../../hooks/trade-page/trade-panel/useTradePanel.ts";
 import TradeSuccessModal from "../../modals/TradeSuccessModal.tsx";
-import ConfirmTradeModal from "../../modals/ConfirmTradeModal.tsx"; // ✅ новый импорт
+import ConfirmTradeModal from "../../modals/ConfirmTradeModal.tsx";
 
 const PanelContainer = styled.div`
     display: flex;
@@ -163,7 +163,7 @@ const TradePanel: React.FC<TradePanelProps> = ({ symbol, name, price }) => {
 
     const [lastTrade, setLastTrade] = useState<{ amount: number; value: number } | null>(null);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [showConfirmModal, setShowConfirmModal] = useState(false); // ✅ новое состояние
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     const handleTrade = () => {
         const result = handleExecuteTrade();

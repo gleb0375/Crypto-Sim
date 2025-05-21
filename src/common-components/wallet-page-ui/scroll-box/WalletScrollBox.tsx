@@ -4,6 +4,10 @@ import WalletScrollBoxItem from './WalletScrollBoxItem.tsx';
 import { WalletScrollBoxProps } from '../../../types/wallet.types.ts';
 import CoinDetailModal from '../../modals/CoinDetailModal.tsx';
 import { COL_TEMPLATE, MOBILE_COL_TEMPLATE, LEFT_COLUMN_WIDTH } from '../../../constants/wallet.constants.ts';
+import ConfirmTradeModal from "../../modals/ConfirmTradeModal.tsx";
+import {useWallet} from "../../../contexts/WalletContext.tsx";
+import TradeSuccessModal from "../../modals/TradeSuccessModal.tsx";
+import ErrorModal from "../../modals/ErrorModal.tsx";
 
 
 const ScrollBoxContainer = styled.div`
@@ -46,12 +50,17 @@ const HeaderRow = styled.div`
 
     span:nth-child(3) {
         padding-right: 1.5vh;
-        justify-self: center;
+        justify-self: end;
     }
 
     span:nth-child(4) {
         justify-self: end;
         padding-right: 0.5rem;
+    }
+
+    span:nth-child(5) {
+        justify-self: end;
+        padding-right: 0.5vh;
     }
 
     @media (max-width: 480px) {
@@ -75,6 +84,13 @@ const ItemsContainer = styled.div`
 
 const WalletScrollBox: React.FC<WalletScrollBoxProps> = ({ coins }) => {
     const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+    const [selectedCoinToSell, setSelectedCoinToSell] = useState<typeof coins[0] | null>(null);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [lastTrade, setLastTrade] = useState<{ name: string; amount: number; value: number } | null>(null);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+
+    const { executeTrade, wallet } = useWallet();
 
     return (
         <>
@@ -84,19 +100,78 @@ const WalletScrollBox: React.FC<WalletScrollBoxProps> = ({ coins }) => {
                     <span>Name</span>
                     <span>Holdings</span>
                     <span>Value</span>
+                    <span>Sell All</span>
                 </HeaderRow>
 
                 <ItemsContainer>
                     {coins.map((c, i) => (
                         <div key={c.symbol} onClick={() => setSelectedSymbol(c.symbol)}>
-                            <WalletScrollBoxItem coin={c} index={i + 1} />
+                            <WalletScrollBoxItem
+                                coin={c}
+                                index={i + 1}
+                                onSellAll={() => setSelectedCoinToSell(c)}
+                                onError={() => setShowErrorModal(true)}
+                            />
                         </div>
                     ))}
                 </ItemsContainer>
             </ScrollBoxContainer>
 
             {selectedSymbol && (
-                <CoinDetailModal symbol={selectedSymbol} onClose={() => setSelectedSymbol(null)} />
+                <CoinDetailModal
+                    symbol={selectedSymbol}
+                    onClose={() => setSelectedSymbol(null)}
+                />
+            )}
+
+            {selectedCoinToSell && selectedCoinToSell.holdings > 0 && (() => {
+                const coin = wallet.find(c => c.symbol === selectedCoinToSell.symbol);
+                if (!coin) return null;
+
+                const currentPrice = coin.value / coin.holdings;
+                const currentValue = coin.value;
+
+                return (
+                    <ConfirmTradeModal
+                        name={coin.name}
+                        amount={coin.holdings}
+                        value={currentValue}
+                        mode="sell"
+                        warning={
+                            selectedCoinToSell.symbol !== "USDT" &&
+                            selectedCoinToSell.holdings > 0 &&
+                            selectedCoinToSell.avgBuyPrice > (selectedCoinToSell.value / selectedCoinToSell.holdings)
+                        }
+                        onClose={() => setSelectedCoinToSell(null)}
+                        onConfirm={() => {
+                            executeTrade("sell", coin.symbol, currentPrice, coin.holdings);
+                            setLastTrade({
+                                name: coin.name,
+                                amount: coin.holdings,
+                                value: currentValue,
+                            });
+                            setShowSuccessModal(true);
+                            setSelectedCoinToSell(null);
+                        }}
+                    />
+                );
+            })()}
+
+            {showSuccessModal && lastTrade && (
+                <TradeSuccessModal
+                    name={lastTrade.name}
+                    amount={lastTrade.amount}
+                    value={lastTrade.value}
+                    mode="sell"
+                    onClose={() => setShowSuccessModal(false)}
+                />
+            )}
+
+            {showErrorModal && (
+                <ErrorModal
+                    error="You can't sell USDT. This currency is used for trading only."
+                    onClose={() => setShowErrorModal(false)}
+                />
             )}
         </>
     );

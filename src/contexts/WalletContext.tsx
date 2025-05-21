@@ -52,17 +52,37 @@ export const WalletProvider: React.FC<React.PropsWithChildren> = ({ children }) 
                 if (item.symbol === symbol) {
                     const delta = mode === "buy" ? amount : -amount;
                     const newHoldings = item.holdings + delta;
-                    return { ...item, holdings: newHoldings, value: newHoldings * price };
+
+                    let newAvgBuyPrice = item.avgBuyPrice ?? 0;
+                    if (mode === "buy") {
+                        const totalCostBefore = newAvgBuyPrice * item.holdings;
+                        const totalCostNew = price * amount;
+                        newAvgBuyPrice = newHoldings > 0
+                            ? (totalCostBefore + totalCostNew) / newHoldings
+                            : 0;
+                    } else {
+                        newAvgBuyPrice = item.avgBuyPrice ?? 0;
+                    }
+
+                    return {
+                        ...item,
+                        holdings: newHoldings,
+                        value: newHoldings * price,
+                        avgBuyPrice: newAvgBuyPrice,
+                    };
                 }
+
                 if (item.symbol === "USDT") {
                     const usdtDelta = mode === "buy" ? -amount * price : amount * price;
                     const newHoldings = item.holdings + usdtDelta;
                     return { ...item, holdings: newHoldings, value: newHoldings };
                 }
+
                 return item;
             })
         );
     };
+
 
     const resetWallet = () => {
         const initial = buildInitialWallet();

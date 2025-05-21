@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { WalletScrollBoxItemProps } from "../../../types/wallet.types.ts";
 import {formatCompact} from "../../../utils/number.ts";
+import {GiPayMoney} from "react-icons/gi";
 
 
 const ItemContainer = styled.div`
@@ -62,7 +63,10 @@ const Holdings = styled.div`
     text-align: center;
     color: #2e2e2e;
     font-size: 2vh;
-    
+   
+    @media (max-width: 480px) {
+        font-size: 1.8vh;
+    }
 `;
 
 const Value = styled.div`
@@ -70,11 +74,33 @@ const Value = styled.div`
     text-align: right;
     font-weight: bold;
     color: #1a1a1a;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
     font-size: 2vh;
+
+    @media (max-width: 480px) {
+        font-size: 1.8vh;
+    }
 `;
 
-const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index }) => {
+const SellButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #1e1e24;
+    font-size: 3vh;
+    padding-right: 0.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        color: #fd0500;
+    }
+`;
+
+
+const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index, onSellAll, onError }) => {
     const displayHoldings = formatCompact(coin.holdings);
     const displayValue    = formatCompact(coin.value);
 
@@ -87,7 +113,22 @@ const WalletScrollBoxItem: React.FC<WalletScrollBoxItemProps> = ({ coin, index }
             </CoinInfo>
             <Holdings title={coin.holdings.toString()}>{displayHoldings}</Holdings>
             <Value title={coin.value.toString()}>{displayValue}</Value>
+            <SellButton
+                title="Sell all"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    if (coin.symbol === "USDT") {
+                        onError();
+                    } else {
+                        onSellAll();
+                    }
+                }}
+            >
+                <GiPayMoney />
+            </SellButton>
+
         </ItemContainer>
+
     );
 };
 

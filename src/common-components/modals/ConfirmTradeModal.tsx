@@ -60,7 +60,7 @@ const Button = styled.button<{ primary?: boolean }>`
 `;
 
 const ConfirmTradeModal: React.FC<ConfirmTradeModalProps> = ({
-                                                                 name, amount, value, mode, onConfirm, onClose
+                                                                 name, amount, value, mode, onConfirm, onClose, warning
                                                              }) => {
     const verb = mode === "buy" ? "buy" : "sell";
 
@@ -71,6 +71,11 @@ const ConfirmTradeModal: React.FC<ConfirmTradeModalProps> = ({
                 <Message>
                     Are you sure you want to {verb} {amount.toFixed(6)} {name} for ${value.toFixed(2)}?
                 </Message>
+                {warning && (
+                    <Message style={{ color: 'red', fontWeight: 'bold' }}>
+                        Attention! You are selling at a loss!
+                    </Message>
+                )}
                 <ButtonRow>
                     <Button onClick={onClose}>Cancel</Button>
                     <Button primary onClick={onConfirm}>Confirm</Button>

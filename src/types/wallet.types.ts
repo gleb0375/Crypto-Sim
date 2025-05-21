@@ -14,6 +14,7 @@ export interface WalletCoinItem extends Coin {
     rank: number;
     holdings: number;
     value: number;
+    avgBuyPrice: number;
 }
 
 export interface WalletBalance {
@@ -28,6 +29,8 @@ export interface WalletScrollBoxProps {
 export interface WalletScrollBoxItemProps {
     coin: WalletCoinItem;
     index: number;
+    onSellAll: () => void;
+    onError: () => void;
 }
 
 export interface PieChartEntry {

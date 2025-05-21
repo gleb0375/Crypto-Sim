@@ -18,6 +18,7 @@ export interface CoinDetailModalProps {
 
 export interface ConfirmTradeModalProps extends TradeSuccessModalProps {
     onConfirm: () => void;
+    warning?: boolean;
 }
 
 export interface ConfirmResetWalletModalProps {
