@@ -30,18 +30,6 @@ const NavSection = styled.nav`
     }
 `;
 
-const IdentityBox = styled.div`
-    position: absolute;
-    left: 2vh;
-    top: 1.2vh;
-    color: #ccc;
-    font-size: 2vh;
-    line-height: 1.4;
-    text-align: left;
-    white-space: pre-line;
-`;
-
-
 const NavButton = styled.button<{ isActive: boolean }>`
     display: inline-block;
     position: relative;
@@ -170,11 +158,6 @@ const Header: React.FC = () => {
 
     return (
         <HeaderContainer>
-            <IdentityBox>
-                Hleb Hnatsiuk
-                {"\n"}A23B0392P
-            </IdentityBox>
-
             <NavSection>
                 <NavButton
                     onClick={() => navigate(ROUTES.ABOUT)}
